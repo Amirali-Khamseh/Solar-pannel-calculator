@@ -1,0 +1,15 @@
+#user-section {
+    background: white;
+    color: black;
+    border-radius: 2rem;
+    padding: 0.5rem;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+#navbar-project {
+    height: 4rem;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}

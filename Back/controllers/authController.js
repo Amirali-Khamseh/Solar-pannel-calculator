@@ -6,12 +6,12 @@ const User = require('../models/User');
 signup = async (req, res) => {
 
     try {
-        const { email, password } = req.body;
+        const { email, password, name } = req.body;
 
         // Check if the user already exists
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
-            return res.status(409).json({ error: 'User already exists' });
+            return res.status(401).render('400');
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -19,6 +19,7 @@ signup = async (req, res) => {
         const user = new User({
             email: email,
             password: hashedPassword,
+            name
         });
 
         await user.save();
@@ -26,29 +27,29 @@ signup = async (req, res) => {
         res.status(201).json({ message: 'User created successfully' });
     } catch (error) {
         console.error('Error signing up', error);
-        res.status(500).json({ error: 'An error occurred' });
+        res.status(500).render('500');
     }
 };
 
 signin = async (req, res) => {
-    
+
     try {
         const { email, password } = req.body;
 
         const user = await User.findOne({ email: email });
         if (!user) {
-            return res.status(401).json({ error: 'Invalid email or password' });
+            return res.status(401).render('400');
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
-            return res.status(401).json({ error: 'Invalid email or password' });
+            return res.status(401).render('400');
         }
 
-        res.status(200).json({ message: 'Sign in successful' });
+        res.status(200).render('project', {user});
     } catch (error) {
         console.error('Error signing in', error);
-        res.status(500).json({ error: 'An error occurred' });
+        res.status(500).render('500');
     }
 };
 
