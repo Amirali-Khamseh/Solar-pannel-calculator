@@ -1,3 +1,13 @@
+
+
+/*
+
+TODO
+Boot strap in the index.js
+
+*/
+
+
 const express = require('express');
 const path = require('path');
 require('dotenv').config();
@@ -13,7 +23,7 @@ connectionDB();
 //Middleware set up 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(express.static('public')); // Serve static files from the "public" folder
+app.use(express.static(__dirname + '/public'));; // Serve static files from the "public" folder
 
 //Setting up the template engine
 app.set('view engine', 'ejs'); // Set EJS as the templating engine
