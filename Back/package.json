@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js" ,
-    "dev" : "nodemon server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "author": "Amirali Shaban Khamseh",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "bcrypt": "^5.1.0",
     "bootstrap": "^5.2.3",
     "dotenv": "^16.0.3",
+    "ejs": "^3.1.9",
     "express": "^4.18.2",
     "mongoose": "^7.2.1"
   },
