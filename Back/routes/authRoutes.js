@@ -1,6 +1,6 @@
 const express = require('express');
 const authController = require('../controllers/authController');
-
+//deleteUser , updateUser
 const router = express.Router();
 
 router.get('/signup', (req, res) => {
@@ -11,5 +11,10 @@ router.get('/signin', (req, res) => {
 });
 router.post('/signup', authController.signup);
 router.post('/signin', authController.signin);
+
+router.post('/update/:id', authController.updateUser);
+router.get('/update/:id', authController.updateUserGet);
+
+router.post('/delete/:id', authController.deleteUser);
 
 module.exports = router;

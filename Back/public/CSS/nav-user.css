@@ -13,3 +13,23 @@
     top: 0;
     width: 100%;
 }
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    color: gray;
+
+}
+
+#logout {
+    background: crimson;
+    color: white;
+    border-radius: 2rem;
+    padding: 0.5rem;
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 0.4rem;
+}

@@ -5,11 +5,16 @@
 <%- include('./partials/head') %>
 
     <body class="text-center">
-        <%- include('./partials/index-nav') %>
+        <%- include('./partials/nav') %>
             <main class="form-signin w-100 m-auto">
-                <form action="/auth/signin" method="POST">
-                    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+                <form action="/auth/update/<%= user._id  %>" method="POST">
+                    <h1 class="h3 mb-3 fw-normal">Update user</h1>
 
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Amir Khamseh "
+                            name="name">
+                        <label for="floatingInput">Name </label>
+                    </div>
                     <div class="form-floating">
                         <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"
                             name="email">
@@ -22,7 +27,8 @@
                     </div>
 
 
-                    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+
+                    <button class="w-100 btn btn-lg  btn-info" type="submit">Update</button>
 
                 </form>
 

@@ -6,7 +6,7 @@
     <!-- /Images/1.jpg" -->
 
     <body class="index-container">
-      
+
         <%- include('./partials/nav') %>
             <swiper-container class="swiper-container">
                 <swiper-slide class="swiper-slide">
@@ -19,8 +19,36 @@
                     <img src="/Images/3.jpg" alt="">
                 </swiper-slide class="swiper-slide">
             </swiper-container>
+            <table class="table table-sm table-dark">
+                <thead>
+                    <tr>
 
-            
+                        <th scope="col">User</th>
+                        <th scope="col">Project</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-success">
+                                <a href="/auth/update/<%= user._id %>">Edit data</a></button>
+                        </td>
+                        <td> <button type="button" class="btn btn-success"><a href="">Create a Project</a></button></td>
+
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-danger"><a href="">Delete account</a></button>
+                        </td>
+                        <td> <button type="button" class="btn btn-primary"><a href="">List of Projects</a></button></td>
+
+
+                    </tr>
+                </tbody>
+            </table>
+
+
 
             <%- include('./partials/copyright') %>
 
