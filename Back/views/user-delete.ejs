@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('./partials/head') %>
+
+    <body>
+
+        <table class="table table-sm table-dark ">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                    <td>
+                        <%= user.name %>
+                    </td>
+                    <td>
+                        <%= user.email %>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <div class="note-container">
+            Are you sure you want to delete this account ?
+            <br>
+            <form action="/auth/delete/<%= user._id %>" method="POST">
+                <button class="btn btn-danger" type="submit">
+                    Yes ‼
+                </button>
+            </form>
+
+            <button class="btn btn-primary">
+                <a href="/project">Nope , Back Home </a>
+            </button>
+        </div>
+    </body>
+
+</html>

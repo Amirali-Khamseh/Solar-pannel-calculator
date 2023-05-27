@@ -107,7 +107,20 @@ const updateUser = async (req, res) => {
 };
 
 
-
+//deleteUserGet to preview data before completely deleting
+const deleteUserGet = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById({ _id: id });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.status(200).render('user-delete',{user});
+    } catch (error) {
+        console.error('Error deleting user', error);
+        res.status(500).json({ error: 'An error occurred' });
+    }
+};  
 // Delete user by ID
 const deleteUser = async (req, res) => {
     try {
@@ -124,4 +137,4 @@ const deleteUser = async (req, res) => {
 };
 
 
-module.exports = { signin, signup, updateUser, deleteUser, updateUserGet };
+module.exports = { signin, signup, updateUser, deleteUser, updateUserGet , deleteUserGet};
