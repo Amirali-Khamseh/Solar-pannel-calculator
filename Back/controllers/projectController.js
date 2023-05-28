@@ -46,12 +46,18 @@ const getAllProjects = async (req, res) => {
 // Get a project by ID
 const getProjectById = async (req, res) => {
     try {
+        const userId = req.session.userId;
         const { id } = req.params;
-        const project = await Project.findById(id).populate('createdBy', 'name');
+
+        const project = await Project.findById(id);
+
         if (!project) {
             return res.status(404).json({ error: 'Project not found' });
         }
-        res.status(200).json(project);
+        if (project.createdBy.toString() !== userId) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        res.status(200).render('details-project',{project});
     } catch (error) {
         console.error('Error getting project', error);
         res.status(500).json({ error: 'An error occurred' });

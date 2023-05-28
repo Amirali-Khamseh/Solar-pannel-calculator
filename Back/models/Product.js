@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
     powerPeak: {
         type: Number,
-        required: true,
+
     },
     orientation: {
         type: String,

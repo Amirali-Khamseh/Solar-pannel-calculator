@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+
+
+<%- include('./partials/head') %>
+
+    <body class="container d-flex flex-column">
+        <div class="row col-12">
+            <table class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Project's name</th>
+                        <th scope="col">Project's description</th>
+                        <th scope="col">Edit project</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <%= project.title %>
+                        </td>
+                        <td>
+                            <%= project.description %>
+                        </td>
+
+                        <td>
+                            <a href="/projects/update/<%= project._id %>">Edit 🔄</a>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <button class="btn btn-primary"> <a href="/products/create/<%= project._id %>">Create Product🛰 </a> </button>
+            <button class="btn btn-success"> <a href="">List of Products 📊</a> </button>
+        </div>
+
+    </body>
+
+</html>
