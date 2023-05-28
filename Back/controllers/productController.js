@@ -11,13 +11,17 @@ const renderCreate = (req, res) => {
 // Get all products
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const projectId = req.params.projectId;
+
+    const products = await Product.find({ project: projectId });
+
     res.status(200).json(products);
   } catch (error) {
     console.error('Error getting products', error);
     res.status(500).json({ error: 'An error occurred' });
   }
 };
+
 
 // Get product by ID
 const getProductById = async (req, res) => {
