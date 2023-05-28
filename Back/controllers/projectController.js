@@ -105,38 +105,38 @@ const renderDelete = async (req, res) => {
         if (!project) {
             return res.status(404).json({ error: 'Project not found' });
         }
-        res.render('delete-project', {project})
+        res.render('delete-project', { project })
     } catch (error) {
         console.error('Error getting project', error);
         res.status(500).json({ error: 'An error occurred' });
     }
-    
+
 };
 // Delete a project by ID
 const deleteProject = async (req, res) => {
     try {
-   
-       
-            const userId = req.session.userId;
-            const { id } = req.params;
-            const { title, description } = req.body;
-    
-            const project = await Project.findById(id);
-    
-            if (!project) {
-                return res.status(404).json({ error: 'Project not found' });
-            }
-    
-            // Check if the user ID matches the project's creator
-            if (project.createdBy.toString() !== userId) {
-                return res.status(401).json({ error: 'Unauthorized' });
-            }
-    
+
+
+        const userId = req.session.userId;
+        const { id } = req.params;
+        const { title, description } = req.body;
+
+        const project = await Project.findById(id);
+
+        if (!project) {
+            return res.status(404).json({ error: 'Project not found' });
+        }
+
+        // Check if the user ID matches the project's creator
+        if (project.createdBy.toString() !== userId) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
         const deletedProject = await Project.findByIdAndDelete(id);
         if (!deletedProject) {
             return res.status(404).json({ error: 'Project not found' });
         }
-        res.status(204).json({ message: 'Project deleted successfully' });
+        res.status(200).render('project', { user: userId });
     } catch (error) {
         console.error('Error deleting project', error);
         res.status(500).json({ error: 'An error occurred' });
