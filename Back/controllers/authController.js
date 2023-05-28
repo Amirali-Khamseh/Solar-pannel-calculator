@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
-
+let CurrentUser;
 
 
 signup = async (req, res) => {
@@ -45,6 +45,8 @@ signin = async (req, res) => {
         if (!passwordMatch) {
             return res.status(401).render('400');
         }
+        CurrentUser = user;
+        req.session.userId = user._id;
 
         res.status(200).render('project', { user });
     } catch (error) {
@@ -115,12 +117,12 @@ const deleteUserGet = async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.status(200).render('user-delete',{user});
+        res.status(200).render('user-delete', { user });
     } catch (error) {
         console.error('Error deleting user', error);
         res.status(500).json({ error: 'An error occurred' });
     }
-};  
+};
 // Delete user by ID
 const deleteUser = async (req, res) => {
     try {
@@ -137,4 +139,5 @@ const deleteUser = async (req, res) => {
 };
 
 
-module.exports = { signin, signup, updateUser, deleteUser, updateUserGet , deleteUserGet};
+module.exports =
+ { signin, signup, updateUser, deleteUser, updateUserGet, deleteUserGet };

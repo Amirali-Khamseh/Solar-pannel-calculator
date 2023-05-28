@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+
+
+<%- include('./partials/head') %>
+
+    <body class="text-center">
+        <h2>Are you sure you want to delete this project ?</h2>
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+
+                    <th scope="col">Project's name</th>
+                    <th scope="col">Project's description</th>
+                    <th scope="col">Project's Owner</th>
+                    <th scope="col">Project's Details</th>
+                    <th scope="col">Edit project</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        <%= project.title %>
+                    </td>
+                    <td>
+                        <%= project.description %>
+                    </td>
+                    <td>
+                        <%= project.createdBy.name %>
+                    </td>
+                    <td>
+
+                        <a href="/projects/update/<%= project._id %>">Edit 🔄</a>
+                    </td>
+                    <td>
+                        <a href="">View 🧐</a>
+                    </td>
+                </tr>
+                <form action="/projects/delete/<%=project._id%>" method="POST">
+                    <button type="submit" class="btn btn-danger">Yes ✔  </button>
+                </form>
+                <button class="btn btn-primary"> <a href="/projects">Nope ❌</a></button>
+            </tbody>
+        </table>
+    </body>
+
+</html>

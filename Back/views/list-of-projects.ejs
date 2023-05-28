@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+
+
+<%- include('./partials/head') %>
+
+    <body>
+
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+
+                    <th scope="col">Project's name</th>
+                    <th scope="col">Project's description</th>
+                    <th scope="col">Project's Owner</th>
+                    <th scope="col">Project's Details</th>
+                    <th scope="col">Edit project</th>
+                    <th scope="col">Delete a project</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <% projects.forEach((project)=>{ %>
+                    <tr>
+                        <td>
+                            <%= project.title %>
+                        </td>
+                        <td>
+                            <%= project.description %>
+                        </td>
+                        <td>
+                            <%= project.createdBy.name %>
+                        </td>
+                        <td>
+
+                            <a href="/projects/update/<%= project._id %>">Edit 🔄</a>
+                        </td>
+                        <td>
+                            <a href="/projects/delete/<%= project._id %>">Delete ❌</a>
+
+
+                        </td>
+                        <td>
+                            <a href="">View 🧐</a>
+
+
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </body>
+
+
+</html>

@@ -1,66 +1,139 @@
 const Project = require('../models/Project');
 
-// Get all projects
-const getAllProjects = async (req, res) => {
-    try {
-        const projects = await Project.find();
-        res.status(200).json(projects);
-    } catch (error) {
-        console.error('Error getting projects', error);
-        res.status(500).json({ error: 'An error occurred' });
-    }
-};
-
-// Get project by ID
-const getProjectById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const project = await Project.findById(id);
-        if (!project) {
-            return res.status(404).json({ error: 'Project not found' });
-        }
-        res.status(200).json(project);
-    } catch (error) {
-        console.error('Error getting project by ID', error);
-        res.status(500).json({ error: 'An error occurred' });
-    }
-};
+//Rendering the Project's creation from 
+const renderForm = (req, res) => {
+    res.render('create-project')
+}
 
 // Create a new project
 const createProject = async (req, res) => {
+    const userId = req.session.userId;
+    console.log(req.body.name, req.body.description, userId);
     try {
-        const { name } = req.body;
-        const project = new Project({ name });
+        const { title, description } = req.body;
+        const createdBy = userId;
+
+        const project = new Project({
+            title: title,
+            description: description,
+            createdBy: createdBy
+        });
+
         await project.save();
-        res.status(201).json(project);
+
+        //res.status(201).json({ message: 'Project created successfully', project });
+        res.render('project', { user: userId });
     } catch (error) {
         console.error('Error creating project', error);
         res.status(500).json({ error: 'An error occurred' });
     }
 };
 
-// Update project by ID
-const updateProject = async (req, res) => {
+// Get all projects
+const getAllProjects = async (req, res) => {
+    try {
+        const userId = req.session.userId;
+        const projects = await Project.find({ createdBy: userId }).populate('createdBy', 'name');
+
+        res.render('list-of-projects', { projects });
+    } catch (error) {
+        console.error('Error getting projects', error);
+        res.status(500).json({ error: 'An error occurred' });
+    }
+};
+
+
+// Get a project by ID
+const getProjectById = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name } = req.body;
-        const project = await Project.findByIdAndUpdate(id, { name }, { new: true });
+        const project = await Project.findById(id).populate('createdBy', 'name');
         if (!project) {
             return res.status(404).json({ error: 'Project not found' });
         }
         res.status(200).json(project);
+    } catch (error) {
+        console.error('Error getting project', error);
+        res.status(500).json({ error: 'An error occurred' });
+    }
+};
+
+//Rendering the update page for project 
+
+const renderUpdate = (req, res) => {
+    const id = req.params.id;
+    res.render('edit-project', { id })
+};
+
+// Update a project by ID
+const updateProject = async (req, res) => {
+
+
+    try {
+        const userId = req.session.userId;
+        const { id } = req.params;
+        const { title, description } = req.body;
+
+        const project = await Project.findById(id);
+
+        if (!project) {
+            return res.status(404).json({ error: 'Project not found' });
+        }
+
+        // Check if the user ID matches the project's creator
+        if (project.createdBy.toString() !== userId) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        // Update the project
+        project.title = title;
+        project.description = description;
+        const updatedProject = await project.save();
+
+        res.status(200).render('project', { user: userId });
     } catch (error) {
         console.error('Error updating project', error);
         res.status(500).json({ error: 'An error occurred' });
     }
 };
 
-// Delete project by ID
-const deleteProject = async (req, res) => {
+//Rendering the delete confirmation page 
+const renderDelete = async (req, res) => {
     try {
         const { id } = req.params;
-        const project = await Project.findByIdAndDelete(id);
+        const project = await Project.findById(id);
         if (!project) {
+            return res.status(404).json({ error: 'Project not found' });
+        }
+        res.render('delete-project', {project})
+    } catch (error) {
+        console.error('Error getting project', error);
+        res.status(500).json({ error: 'An error occurred' });
+    }
+    
+};
+// Delete a project by ID
+const deleteProject = async (req, res) => {
+    try {
+   
+       
+            const userId = req.session.userId;
+            const { id } = req.params;
+            const { title, description } = req.body;
+    
+            const project = await Project.findById(id);
+    
+            if (!project) {
+                return res.status(404).json({ error: 'Project not found' });
+            }
+    
+            // Check if the user ID matches the project's creator
+            if (project.createdBy.toString() !== userId) {
+                return res.status(401).json({ error: 'Unauthorized' });
+            }
+    
+        const deletedProject = await Project.findByIdAndDelete(id);
+        if (!deletedProject) {
             return res.status(404).json({ error: 'Project not found' });
         }
         res.status(204).json({ message: 'Project deleted successfully' });
@@ -71,9 +144,12 @@ const deleteProject = async (req, res) => {
 };
 
 module.exports = {
+    createProject,
     getAllProjects,
     getProjectById,
-    createProject,
     updateProject,
     deleteProject,
+    renderForm,
+    renderUpdate,
+    renderDelete
 };

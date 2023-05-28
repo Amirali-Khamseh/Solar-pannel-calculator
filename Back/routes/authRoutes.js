@@ -1,7 +1,7 @@
 const express = require('express');
 const authController = require('../controllers/authController');
-//deleteUser , updateUser
 const router = express.Router();
+
 
 router.get('/signup', (req, res) => {
     res.render('signUp')
