@@ -12,15 +12,26 @@ const renderCreate = (req, res) => {
 const getAllProducts = async (req, res) => {
   try {
     const projectId = req.params.projectId;
-
     const products = await Product.find({ project: projectId });
-
-    res.status(200).json(products);
+    // Render the view template
+    res.status(200).render('list-of-products', { products });
   } catch (error) {
     console.error('Error getting products', error);
     res.status(500).json({ error: 'An error occurred' });
   }
 };
+//Get the lon and lat as a JSON , to call via AJAx from front
+const getLonLat = async (req, res) => {
+  try {
+    const projectId = req.params.projectId;
+    const products = await Product.find({ project: projectId });
+    // Render the view template
+    res.status(200).json({ products });
+  } catch (error) {
+    console.error('Error getting products', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+}
 
 
 // Get product by ID
@@ -42,9 +53,9 @@ const getProductById = async (req, res) => {
 const createProduct = async (req, res) => {
 
   try {
-    const {  orientation, inclination, area, longitude, latitude, status, projectId } = req.body;
+    const { orientation, inclination, area, longitude, latitude, status, projectId } = req.body;
     const product = new Product({
-   
+
       orientation,
       inclination,
       area,
@@ -102,5 +113,6 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
-  renderCreate
+  renderCreate,
+  getLonLat
 };

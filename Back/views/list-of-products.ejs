@@ -1,0 +1,67 @@
+<html lang="en" data-bs-theme="auto">
+
+
+<head>
+    <script src="/docs/5.3/assets/js/color-modes.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A solar panel app created for the database and web techniques at TU Chemnitz">
+    <meta name="generator" content="Hugo 0.111.3">
+    <title>Solar panel calculator</title>
+
+    <!-- Custom styles for ejs pages -->
+    <link rel="stylesheet" href="/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="/CSS/sign-in.css">
+    <link rel="stylesheet" href="/CSS/swiper.css">
+    <link rel="stylesheet" href="/CSS/navbar.css">
+    <link rel="stylesheet" href="/CSS/nav-user.css">
+    <link rel="stylesheet" href="/CSS/copyright.css">
+    <link rel="stylesheet" href="/CSS/map.css">
+    <script src="/JS/bootstrap.min.js" defer></script>
+    <script src="/JS/bootstrap.js" defer></script>
+    <script src="/JS/mapGet.js" defer></script>
+    <!-- Leaflet CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
+</head>
+
+<body class="container d-flex flex-column">
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+
+                <th scope="col">Orientation </th>
+                <th scope="col">Inclination </th>
+                <th scope="col">Area M<sup>2</sup></th>
+                <th scope="col">Edit </th>
+                <th scope="col">Delete</th>
+                <th scope="col">Report</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <% products.forEach(product=> { %>
+                <tr>
+                    <td>
+                        <%= product.orientation %>
+                    </td>
+                    <td>
+                        <%= product.inclination %>
+                    </td>
+                    <td>
+                        <%= product.area %>
+                    </td>
+                    <td>Edit</td>
+                    <td>delete</td>
+                    <td>Report</td>
+                </tr>
+                <% });%>
+        </tbody>
+    </table>
+    <div id="map"></div>
+</body>
