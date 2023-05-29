@@ -17,9 +17,11 @@ router.get('/map/:projectId', productController.getLonLat);
 
 
 //Updating the specifc product based on its projectId and its own _id
-router.post('/:projectId/:id', productController.updateProduct);
+router.post('/update/:projectId/:id', productController.updateProduct);
+
 //Rendring the edit ejs for product 
 router.get('/:projectId/:id', productController.renderUpdate);
+
 //Getting one product based on its Id and pass it to front for creating the map with lon and lat 
 router.get('/update/:projectId/:id', productController.getDataLonLat);
 

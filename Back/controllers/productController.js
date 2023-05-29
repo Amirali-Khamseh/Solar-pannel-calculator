@@ -87,18 +87,29 @@ const renderUpdate = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { projectId } = req.params
-    res.json({ id, projectId })
-    // const { powerPeak, orientation, inclination, area, longitude, latitude, status } = req.body;
-    // const product = await Product.findByIdAndUpdate(
-    //   id,
-    //   { powerPeak, orientation, inclination, area, longitude, latitude, status },
-    //   { new: true }
-    // );
-    // if (!product) {
-    //   return res.status(404).json({ error: 'Product not found' });
-    // }
-    // res.status(200).json(product);
+    const { projectId } = req.params;
+    const { orientation, inclination, area, longitude, latitude, status } = req.body;
+
+
+    const product = await Product.findByIdAndUpdate(
+      id,
+      { orientation, inclination, area, longitude, latitude, status },
+      { new: true }
+    );
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    //Fetching all the new changes and rendering the new list of products
+    try {
+
+      const products = await Product.find({ project: projectId });
+      // Render the view template
+      res.status(200).render('list-of-products', { products, projectId });
+    } catch (error) {
+      console.error('Error getting products', error);
+      res.status(500).json({ error: 'An error occurred' });
+    }
+
   } catch (error) {
     console.error('Error updating product', error);
     res.status(500).json({ error: 'An error occurred' });

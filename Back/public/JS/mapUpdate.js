@@ -9,7 +9,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 
-
+//Getting one specific product from the enpi point  
 fetch(`/products/map/${projectId}`)
     .then(response => response.json())
     .then(products => {
@@ -20,6 +20,16 @@ fetch(`/products/map/${projectId}`)
                 if (item._id === id) {
 
                     var marker = L.marker([item.latitude, item.longitude], { draggable: true }).addTo(map);
+                    marker.on('dragend', function (event) {
+                        var marker = event.target;
+                        var position = marker.getLatLng();
+                        var lat = position.lat;
+                        var lng = position.lng;
+
+                        // Update the latitude and longitude values
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lng;
+                    });
                 }
 
             });
@@ -29,17 +39,8 @@ fetch(`/products/map/${projectId}`)
     })
     .catch(error => console.log('Error fetching products', error));
 
-marker.on('dragend', function (event) {
-    var marker = event.target;
-    var position = marker.getLatLng();
-    var lat = position.lat;
-    var lng = position.lng;
 
-    // Update the latitude and longitude values
-    document.getElementById('latitude').value = lat;
-    document.getElementById('longitude').value = lng;
-});
-//Getting one specific product from the enpi point  
+
 
 
 

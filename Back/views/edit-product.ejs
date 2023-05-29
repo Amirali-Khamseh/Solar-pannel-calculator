@@ -39,7 +39,7 @@
 
         </div>
 
-        <form action="/products/create" method="POST"
+        <form action="/products/update/<%=projectId%>/<%= product._id %>" method="POST"
             class="d-flex flex-column gap-4 border border-primary p-4 rounded">
 
             <div class="form-group">
@@ -76,12 +76,12 @@
 
             <div class="form-group">
                 <label for="longitude">Longitude</label>
-                <input type="number" placeholder="0" id="longitude" required name="longitude" readonly
-                    value="<%= product.longitude %>">
+                <input type="number" placeholder="0" id="longitude" required name="longitude"
+                    value="<%= product.longitude%>" readonly>
                 <br>
                 <label for="latitude">Latitude</label>
-                <input type="number" placeholder="0" id="latitude" required name="latitude" readonly
-                    value="<%= product.latitude %>">
+                <input type="number" placeholder="0" id="latitude" required name="latitude"
+                    value="<%= product.latitude%>" readonly>
             </div>
 
 
