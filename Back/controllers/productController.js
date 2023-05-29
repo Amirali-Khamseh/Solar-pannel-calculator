@@ -14,7 +14,7 @@ const getAllProducts = async (req, res) => {
     const projectId = req.params.projectId;
     const products = await Product.find({ project: projectId });
     // Render the view template
-    res.status(200).render('list-of-products', { products });
+    res.status(200).render('list-of-products', { products, projectId });
   } catch (error) {
     console.error('Error getting products', error);
     res.status(500).json({ error: 'An error occurred' });
@@ -72,25 +72,52 @@ const createProduct = async (req, res) => {
   }
 };
 
+
+//Render update product
+const renderUpdate = async (req, res) => {
+  const { id, projectId } = req.params;
+  const product = await Product.findById(id);
+  if (!product) {
+    return res.status(404).json({ error: 'Product not found' });
+  }
+  res.render('edit-product', { id, projectId, product });
+}
+
 // Update product by ID
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { powerPeak, orientation, inclination, area, longitude, latitude, status } = req.body;
-    const product = await Product.findByIdAndUpdate(
-      id,
-      { powerPeak, orientation, inclination, area, longitude, latitude, status },
-      { new: true }
-    );
-    if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-    res.status(200).json(product);
+    const { projectId } = req.params
+    res.json({ id, projectId })
+    // const { powerPeak, orientation, inclination, area, longitude, latitude, status } = req.body;
+    // const product = await Product.findByIdAndUpdate(
+    //   id,
+    //   { powerPeak, orientation, inclination, area, longitude, latitude, status },
+    //   { new: true }
+    // );
+    // if (!product) {
+    //   return res.status(404).json({ error: 'Product not found' });
+    // }
+    // res.status(200).json(product);
   } catch (error) {
     console.error('Error updating product', error);
     res.status(500).json({ error: 'An error occurred' });
   }
 };
+
+//Sending the lon and Lat to the front for a single product 
+
+const getDataLonLat = async (req, res) => {
+  try {
+    const projectId = req.params.projectId;
+    const products = await Product.find({ project: projectId });
+    // Render the view template
+    res.status(200).json({ products });
+  } catch (error) {
+    console.error('Error getting products', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+}
 
 // Delete product by ID
 const deleteProduct = async (req, res) => {
@@ -114,5 +141,8 @@ module.exports = {
   updateProduct,
   deleteProduct,
   renderCreate,
-  getLonLat
+  getLonLat,
+  renderUpdate,
+  getDataLonLat
+
 };
