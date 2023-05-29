@@ -6,8 +6,8 @@ const router = express.Router();
 //Getting the create   project ejs page 
 router.get('/create/:id', productController.renderCreate);
 
-//Creating the project
-router.post('/create', productController.createProduct);
+//Creating the product
+router.post('/create/:id', productController.createProduct);
 
 //Getting all of the products of a specific project 
 router.get('/all/:projectId', productController.getAllProducts);
@@ -26,7 +26,8 @@ router.get('/:projectId/:id', productController.renderUpdate);
 router.get('/update/:projectId/:id', productController.getDataLonLat);
 
 
-router.delete('/:id', productController.deleteProduct);
+router.post('/delete/:projectId/:id', productController.deleteProduct);
+router.get('/delete/:projectId/:id', productController.renderDelete);
 
 router.get('/:id', productController.getProductById);
 module.exports = router;

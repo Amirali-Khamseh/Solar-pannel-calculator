@@ -1,6 +1,6 @@
 //Getting the project Id from the URl
-const projectId = window.location.pathname.split('/')[2];
-const id = window.location.pathname.split('/')[3];
+const projectId = window.location.pathname.split('/')[3];
+const id = window.location.pathname.split('/')[4];
 console.log(id);
 var map = L.map('map').setView([54, 15], 4);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -19,17 +19,17 @@ fetch(`/products/map/${projectId}`)
 
                 if (item._id === id) {
 
-                    var marker = L.marker([item.latitude, item.longitude], { draggable: true }).addTo(map);
-                    marker.on('dragend', function (event) {
-                        var marker = event.target;
-                        var position = marker.getLatLng();
-                        var lat = position.lat;
-                        var lng = position.lng;
+                    var marker = L.marker([item.latitude, item.longitude]).addTo(map);
+                    // marker.on('dragend', function (event) {
+                    //     var marker = event.target;
+                    //     var position = marker.getLatLng();
+                    //     var lat = position.lat;
+                    //     var lng = position.lng;
 
-                        // Update the latitude and longitude values
-                        document.getElementById('latitude').value = lat;
-                        document.getElementById('longitude').value = lng;
-                    });
+                    //     // Update the latitude and longitude values
+                    //     document.getElementById('latitude').value = lat;
+                    //     document.getElementById('longitude').value = lng;
+                    // });
                 }
 
             });

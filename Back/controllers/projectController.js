@@ -57,7 +57,7 @@ const getProjectById = async (req, res) => {
         if (project.createdBy.toString() !== userId) {
             return res.status(401).json({ error: 'Unauthorized' });
         }
-        res.status(200).render('details-project',{project});
+        res.status(200).render('details-project', { project });
     } catch (error) {
         console.error('Error getting project', error);
         res.status(500).json({ error: 'An error occurred' });

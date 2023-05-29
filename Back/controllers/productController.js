@@ -5,7 +5,8 @@ const Product = require('../models/Product');
 const renderCreate = (req, res) => {
   const { id } = req.params;
   console.log(id);
-  res.render('create-product', { id });
+  const projectId = id;
+  res.render('create-product', { projectId });
 }
 
 // Get all products
@@ -65,7 +66,15 @@ const createProduct = async (req, res) => {
       project: projectId,
     });
     await product.save();
-    res.status(201).json(product);
+    try {
+      const products = await Product.find({ project: projectId });
+      // Render the view template
+      res.status(200).render('list-of-products', { products, projectId });
+    } catch (error) {
+      console.error('Error getting products', error);
+      res.status(500).json({ error: 'An error occurred' });
+    }
+
   } catch (error) {
     console.error('Error creating product', error);
     res.status(500).json({ error: 'An error occurred' });
@@ -134,16 +143,35 @@ const getDataLonLat = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
+    const { projectId } = req.params;
     const product = await Product.findByIdAndDelete(id);
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
-    res.status(204).json({ message: 'Product deleted successfully' });
+    //Fetching all the new changes and rendering the new list of products
+    try {
+
+      const products = await Product.find({ project: projectId });
+      // Render the view template
+      res.status(200).render('list-of-products', { products, projectId });
+    } catch (error) {
+      console.error('Error getting products', error);
+      res.status(500).json({ error: 'An error occurred' });
+    }
   } catch (error) {
     console.error('Error deleting product', error);
     res.status(500).json({ error: 'An error occurred' });
   }
 };
+//Render update product
+const renderDelete = async (req, res) => {
+  const { id, projectId } = req.params;
+  const product = await Product.findById(id);
+  if (!product) {
+    return res.status(404).json({ error: 'Product not found' });
+  }
+  res.render('delete-product', { id, projectId, product });
+}
 
 module.exports = {
   getAllProducts,
@@ -154,6 +182,7 @@ module.exports = {
   renderCreate,
   getLonLat,
   renderUpdate,
-  getDataLonLat
+  getDataLonLat,
+  renderDelete
 
 };
