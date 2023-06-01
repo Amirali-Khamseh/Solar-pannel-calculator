@@ -173,6 +173,32 @@ const renderDelete = async (req, res) => {
   res.render('delete-product', { id, projectId, product });
 }
 
+//Rendering report ejs
+const renderReport = async (req, res) => {
+  const { id, projectId } = req.params;
+  const product = await Product.findById(id);
+  if (!product) {
+    return res.status(404).json({ error: 'Product not found' });
+  }
+  //Fetching the last 24 hours in form of cron Job 
+  res.render('report-product', { id, projectId, product });
+}
+//MAin function for calculating the report between two periods
+
+const reportProduct =  (req,res)=>{
+  const{startDate,endDate , orientation, inclination, area, longitude, latitude, status} =req.body;
+  console.log(startDate ,endDate,orientation, inclination, area, longitude, latitude, status);
+
+//TODO 
+//1-Check the start date matches the start date or creation date of product 
+//2-Calcultion of the energy between 2 periods for each day
+//3-Send an email
+//4- Making the status of the product inactive 
+//5-Re rendering the products page  OOOORRR  maybe rendering a new page 
+
+
+}
+
 module.exports = {
   getAllProducts,
   getProductById,
@@ -183,6 +209,8 @@ module.exports = {
   getLonLat,
   renderUpdate,
   getDataLonLat,
-  renderDelete
+  renderDelete,
+  renderReport,
+  reportProduct
 
 };

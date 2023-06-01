@@ -43,6 +43,8 @@
                     <th scope="col">Edit </th>
                     <th scope="col">Delete</th>
                     <th scope="col">Report</th>
+                    <th scope="col">Editable</th>
+
 
                 </tr>
             </thead>
@@ -62,7 +64,10 @@
                             <a href="/products/<%= projectId %>/<%=product._id%>">Edit</a>
                         </td>
                         <td><a href="/products/delete/<%= projectId %>/<%=product._id%>">Delete</a></td>
-                        <td>Report</td>
+                        <td><a href="/products/report/<%= projectId %>/<%=product._id%>">Report</a> </td>
+                        <td>
+                            <%= product.status==='active' ?'✔':'❌' %>
+                        </td>
                     </tr>
                     <% });%>
             </tbody>
@@ -78,7 +83,10 @@
             </button>
 
         </div>
+
     </div>
+
+
 
 
 

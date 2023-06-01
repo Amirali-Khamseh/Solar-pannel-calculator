@@ -7,7 +7,9 @@ let projectId;
 if (path.includes('/products/all/')) {
     // Extract the projectId from the URL
     projectId = path.split('/').pop();
-} else if (path.includes('/products/update/') || path.includes('/products/delete/')) {
+} else if (
+    path.includes('/products/update/')
+    || path.includes('/products/delete/')) {
     // Split the path by '/'
     const pathParts = path.split('/');
     // Find the index of the 'update' or 'delete' segment
@@ -15,6 +17,12 @@ if (path.includes('/products/all/')) {
     // Check if the index is valid and there is a segment after 'update' or 'delete'
     if (index !== -1 && index < pathParts.length - 1) {
         // Extract the projectId from the next segment
+        projectId = pathParts[index + 1];
+    }
+} else if (path.includes('/products/create/')) {
+    const pathParts = path.split('/');
+    const index = pathParts.indexOf('create');
+    if (index !== -1 && index < pathParts.length - 1) {
         projectId = pathParts[index + 1];
     }
 }

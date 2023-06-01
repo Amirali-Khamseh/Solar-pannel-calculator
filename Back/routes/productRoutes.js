@@ -29,5 +29,15 @@ router.get('/update/:projectId/:id', productController.getDataLonLat);
 router.post('/delete/:projectId/:id', productController.deleteProduct);
 router.get('/delete/:projectId/:id', productController.renderDelete);
 
+
+//NOt used yet 
 router.get('/:id', productController.getProductById);
+
+
+//Rendering the Report Ejs
+router.get('/report/:projectId/:id', productController.renderReport);
+
+//The main function for calculating report betwenn two periods and send email
+router.post('/report/:projectId/:id', productController.reportProduct);
+
 module.exports = router;
