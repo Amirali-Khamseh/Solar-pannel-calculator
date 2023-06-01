@@ -51,6 +51,15 @@
                     <option value="W" <%=product.orientation==='W' ? 'selected' : '' %>>West</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect">Power peak</label>
+                <select class="form-control" id="exampleFormControlSelect" name="powerPeak" required>
+                    <option value="440" <%=product.powerPeak===440 ? 'selected' : '' %>>440 Watt peak</option>
+                    <option value="580" <%=product.powerPeak===580 ? 'selected' : '' %>>580 Watt peak</option>
+                    <option value="630" <%=product.powerPeak===630 ? 'selected' : '' %>>630 Watt peak</option>
+                </select>
+            </div>
+
 
             <div class="form-group">
                 <label for="pi_input">Inclination degree</label>

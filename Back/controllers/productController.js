@@ -54,7 +54,7 @@ const getProductById = async (req, res) => {
 const createProduct = async (req, res) => {
 
   try {
-    const { orientation, inclination, area, longitude, latitude, status, projectId } = req.body;
+    const { powerPeak, orientation, inclination, area, longitude, latitude, status, projectId } = req.body;
     const product = new Product({
 
       orientation,
@@ -63,6 +63,7 @@ const createProduct = async (req, res) => {
       longitude,
       latitude,
       status,
+      powerPeak,
       project: projectId,
     });
     await product.save();
@@ -97,12 +98,12 @@ const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const { projectId } = req.params;
-    const { orientation, inclination, area, longitude, latitude, status } = req.body;
+    const { powerPeak, orientation, inclination, area, longitude, latitude, status } = req.body;
 
 
     const product = await Product.findByIdAndUpdate(
       id,
-      { orientation, inclination, area, longitude, latitude, status },
+      { orientation, inclination, area, longitude, latitude, status, powerPeak },
       { new: true }
     );
     if (!product) {
@@ -185,16 +186,16 @@ const renderReport = async (req, res) => {
 }
 //MAin function for calculating the report between two periods
 
-const reportProduct =  (req,res)=>{
-  const{startDate,endDate , orientation, inclination, area, longitude, latitude, status} =req.body;
-  console.log(startDate ,endDate,orientation, inclination, area, longitude, latitude, status);
+const reportProduct = (req, res) => {
+  const { startDate, endDate, orientation, inclination, area, longitude, latitude, status } = req.body;
+  console.log(startDate, endDate, orientation, inclination, area, longitude, latitude, status);
 
-//TODO 
-//1-Check the start date matches the start date or creation date of product 
-//2-Calcultion of the energy between 2 periods for each day
-//3-Send an email
-//4- Making the status of the product inactive 
-//5-Re rendering the products page  OOOORRR  maybe rendering a new page 
+  //TODO 
+  //1-Check the start date matches the start date or creation date of product 
+  //2-Calcultion of the energy between 2 periods for each day
+  //3-Send an email
+  //4- Making the status of the product inactive 
+  //5-Re rendering the products page  OOOORRR  maybe rendering a new page 
 
 
 }

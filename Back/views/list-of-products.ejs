@@ -40,10 +40,11 @@
                     <th scope="col">Orientation </th>
                     <th scope="col">Inclination </th>
                     <th scope="col">Area M<sup>2</sup></th>
-                    <th scope="col">Edit </th>
-                    <th scope="col">Delete</th>
-                    <th scope="col">Report</th>
-                    <th scope="col">Editable</th>
+                    <th scope="col">Power peak </th>
+                    <th scope="col" class="text-primary">Edit </th>
+                    <th scope="col" class="text-danger">Delete</th>
+                    <th scope="col" class="text-info">Report</th>
+                    <th scope="col" class="text-warning">Editable</th>
 
 
                 </tr>
@@ -61,10 +62,15 @@
                             <%= product.area %>
                         </td>
                         <td>
-                            <a href="/products/<%= projectId %>/<%=product._id%>">Edit</a>
+                            <%= product.powerPeak%> w
                         </td>
-                        <td><a href="/products/delete/<%= projectId %>/<%=product._id%>">Delete</a></td>
-                        <td><a href="/products/report/<%= projectId %>/<%=product._id%>">Report</a> </td>
+                        <td>
+                            <a class="text-primary" href="/products/<%= projectId %>/<%=product._id%>">Edit</a>
+                        </td>
+                        <td><a class="text-danger" href="/products/delete/<%= projectId %>/<%=product._id%>">Delete</a>
+                        </td>
+                        <td> <a class="text-info" href="/products/report/<%= projectId %>/<%=product._id%>">Report</a>
+                        </td>
                         <td>
                             <%= product.status==='active' ?'✔':'❌' %>
                         </td>
