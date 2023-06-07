@@ -1,4 +1,8 @@
 const Product = require('../models/Product');
+const nodemailer = require('nodemailer');
+const Project = require('../models/Project');
+const User = require('../models/User');
+const mongoose = require('mongoose')
 require('dotenv').config();
 
 
@@ -186,11 +190,29 @@ const renderReport = async (req, res) => {
   res.render('report-product', { id, projectId, product });
 }
 
+//Getting the user who have created the project 
+const getCreatedByUser = async (projectId) => {
+  try {
+    const project = await Project.findById(projectId).populate('createdBy').exec();
+    if (!project) {
+      console.log('Project not found');
+      return;
+    }
+
+    const createdByUser = project.createdBy;
+    return createdByUser;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
 //MAin function for calculating the report between two periods
 
 const reportProduct = async (req, res) => {
+  const { projectId } = req.params;
   const { startDate, endDate, orientation, inclination, area, longitude, latitude, status, powerPeak } = req.body;
-  console.log(startDate, endDate, orientation, inclination, area, longitude, latitude, status, powerPeak);
+  console.log(startDate, endDate, orientation, inclination, area, longitude, latitude, status, powerPeak, projectId);
 
   //Api call to get the weather data within 2 periods 
   const orientationMap = {
@@ -201,14 +223,12 @@ const reportProduct = async (req, res) => {
   };
 
   const data = await fetch(`https://api.weatherbit.io/v2.0/history/daily?lat=${latitude}&lon=${longitude}&start_date=${startDate}&end_date=${endDate}&key=${process.env.API_KEY}`);
-  //https://api.weatherbit.io/v2.0/history/daily?lat=51.163&lon=10.448&start_date=2023-05-01&end_date=2023-05-010&key=d69863dbe8604734946b674ef99b16e2
-  //https://api.weatherbit.io/v2.0/history/energy?lat=${latitude}&lon=${longitude}&start_date=${startDate}&end_date=${endDate}&tp=daily&key=${process.env.API_KEY}
+
   const dataJSON = await data.json();
 
   let result = [];
 
   for (let item in dataJSON.data) {
-
     //Object to be send as a report 
     let dailyEnergy = {};
     //Setting up the date property of an Object 
@@ -228,8 +248,43 @@ const reportProduct = async (req, res) => {
     result.push(dailyEnergy);
   }
 
-  console.log(result);
+  // console.log(result);
   //3-Send an email
+  const usertoSend = await getCreatedByUser(projectId);
+  try {
+    // Create a Nodemailer transporter with your email configuration
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'amiralikhamseh01@gmail.com',
+        pass: 'gpuafegvvwqastam'
+      }
+    });
+
+    // Compose the email
+    const mailOptions = {
+      from: 'amiralikhamseh01@gmail.com',
+      to: 'aasam8594@gmail.com',
+      subject: `Your report from ${startDate} up to ${endDate}`,
+      text: ''
+    };
+
+    result.forEach((element, index) => {
+      mailOptions.text += `day ${index + 1} |${element.date} |${((element.electricity) / 1000).toFixed(2)} kw \n`;
+    });
+
+    // Send the email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
   //4- Making the status of the product inactive 
   //5-Re rendering the products page  OOOORRR  maybe rendering a new page 
 

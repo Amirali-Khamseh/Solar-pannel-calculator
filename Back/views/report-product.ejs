@@ -93,13 +93,14 @@
                     value="<%= product.latitude%>" readonly>
             </div>
             <!-- Start date and end date can be maximum the day when the product has been created -->
+            
             <div class="form-group">
                 <label for="startDate">From</label>
                 <input type="date" name="startDate" id="startDate" required
                     max="<%= product.createdAt.toISOString().split('T')[0] %>">
             </div>
             <div class="form-group">
-                <label for="endDate">until</label>
+                <label for="endDate">Up to</label>
                 <input type="date" name="endDate" id="endDate" required
                     max="<%= product.createdAt.toISOString().split('T')[0] %>">
             </div>
