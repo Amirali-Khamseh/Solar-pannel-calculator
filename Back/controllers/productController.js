@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+require('dotenv').config();
 
 
 //Rendring the creating page for product
@@ -184,15 +185,50 @@ const renderReport = async (req, res) => {
   //Fetching the last 24 hours in form of cron Job 
   res.render('report-product', { id, projectId, product });
 }
+
 //MAin function for calculating the report between two periods
 
-const reportProduct = (req, res) => {
-  const { startDate, endDate, orientation, inclination, area, longitude, latitude, status } = req.body;
-  console.log(startDate, endDate, orientation, inclination, area, longitude, latitude, status);
+const reportProduct = async (req, res) => {
+  const { startDate, endDate, orientation, inclination, area, longitude, latitude, status, powerPeak } = req.body;
+  console.log(startDate, endDate, orientation, inclination, area, longitude, latitude, status, powerPeak);
 
-  //TODO 
-  //1-Check the start date matches the start date or creation date of product 
-  //2-Calcultion of the energy between 2 periods for each day
+  //Api call to get the weather data within 2 periods 
+  const orientationMap = {
+    S: 0.75,  // Example value for south-facing orientation
+    N: 0.25,  // Example value for north-facing orientation
+    W: 0.5,   // Example value for west-facing orientation
+    E: 1.0    // Example value for east-facing orientation
+  };
+
+  const data = await fetch(`https://api.weatherbit.io/v2.0/history/daily?lat=${latitude}&lon=${longitude}&start_date=${startDate}&end_date=${endDate}&key=${process.env.API_KEY}`);
+  //https://api.weatherbit.io/v2.0/history/daily?lat=51.163&lon=10.448&start_date=2023-05-01&end_date=2023-05-010&key=d69863dbe8604734946b674ef99b16e2
+  //https://api.weatherbit.io/v2.0/history/energy?lat=${latitude}&lon=${longitude}&start_date=${startDate}&end_date=${endDate}&tp=daily&key=${process.env.API_KEY}
+  const dataJSON = await data.json();
+
+  let result = [];
+
+  for (let item in dataJSON.data) {
+
+    //Object to be send as a report 
+    let dailyEnergy = {};
+    //Setting up the date property of an Object 
+    dailyEnergy.date = dataJSON.data[item].datetime;
+    // Replace 'orientation' with the actual orientation value for each day
+    let orientationFactor = orientationMap[orientation];
+
+    let totalElectricity = area *
+      powerPeak *
+      dataJSON.data[item].max_uv *
+      (inclination / 100) *
+      dataJSON.data[item].solar_rad *
+      orientationFactor *
+      0.002;
+    dailyEnergy.electricity = totalElectricity;
+
+    result.push(dailyEnergy);
+  }
+
+  console.log(result);
   //3-Send an email
   //4- Making the status of the product inactive 
   //5-Re rendering the products page  OOOORRR  maybe rendering a new page 
