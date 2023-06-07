@@ -40,4 +40,7 @@ router.get('/report/:projectId/:id', productController.renderReport);
 //The main function for calculating report betwenn two periods and send email
 router.post('/report/:projectId/:id', productController.reportProduct);
 
+//Graphical representation of a read only project 
+router.get('/report/graph/:projectId/:id',productController.renderGraph);
+
 module.exports = router;

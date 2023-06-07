@@ -2,7 +2,6 @@ const Product = require('../models/Product');
 const nodemailer = require('nodemailer');
 const Project = require('../models/Project');
 const User = require('../models/User');
-const mongoose = require('mongoose')
 require('dotenv').config();
 
 
@@ -205,11 +204,61 @@ const getCreatedByUser = async (projectId) => {
     console.error(error);
   }
 };
+//Send email to the user who has made the product 
+const sendMail = (user, result, startDate, endDate) => {
+  try {
+    // Create a Nodemailer transporter with your email configuration
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'amiralikhamseh01@gmail.com',
+        pass: process.env.APP_KEY
+      }
+    });
 
+    // Compose the email
+    const mailOptions = {
+      from: 'amiralikhamseh01@gmail.com',
+      to: user.email,
+      subject: `Your report from ${startDate} up to ${endDate}`,
+      text: ''
+    };
 
+    result.forEach((element, index) => {
+      mailOptions.text += `day ${index + 1} |${element.date} |${((element.electricity) / 1000).toFixed(2)} kw \n`;
+    });
+
+    // Send the email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+//Making the status inactive 
+const inactivatingStatus = async (id) => {
+  try {
+    const product = await Product.findByIdAndUpdate(
+      id,
+      { status: false },
+      { new: true }
+    )
+  }
+  catch (err) {
+    console.log(err);
+
+  }
+
+}
 //MAin function for calculating the report between two periods
 
 const reportProduct = async (req, res) => {
+  const { id } = req.params;
   const { projectId } = req.params;
   const { startDate, endDate, orientation, inclination, area, longitude, latitude, status, powerPeak } = req.body;
   console.log(startDate, endDate, orientation, inclination, area, longitude, latitude, status, powerPeak, projectId);
@@ -248,49 +297,24 @@ const reportProduct = async (req, res) => {
     result.push(dailyEnergy);
   }
 
-  // console.log(result);
+
   //3-Send an email
   const usertoSend = await getCreatedByUser(projectId);
-  try {
-    // Create a Nodemailer transporter with your email configuration
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'amiralikhamseh01@gmail.com',
-        pass: 'gpuafegvvwqastam'
-      }
-    });
-
-    // Compose the email
-    const mailOptions = {
-      from: 'amiralikhamseh01@gmail.com',
-      to: 'aasam8594@gmail.com',
-      subject: `Your report from ${startDate} up to ${endDate}`,
-      text: ''
-    };
-
-    result.forEach((element, index) => {
-      mailOptions.text += `day ${index + 1} |${element.date} |${((element.electricity) / 1000).toFixed(2)} kw \n`;
-    });
-
-    // Send the email
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log('Email sent:', info.response);
-      }
-    });
-  } catch (error) {
-    console.error(error);
-  }
-
-  //4- Making the status of the product inactive 
-  //5-Re rendering the products page  OOOORRR  maybe rendering a new page 
-
+  sendMail(usertoSend, result, startDate, endDate);
+  //4- Making the status of the product inactive
+  inactivatingStatus(id);
 
 }
-
+//rendering visual grapghs for read only projects 
+const renderGraph = async (req , res)=>{
+  const { id, projectId } = req.params;
+  const product = await Product.findById(id);
+  if (!product) {
+    return res.status(404).json({ error: 'Product not found' });
+  }
+  //Fetching the last 24 hours in form of cron Job 
+  res.render('report-graph', { id, projectId, product });
+} 
 module.exports = {
   getAllProducts,
   getProductById,
@@ -303,6 +327,7 @@ module.exports = {
   getDataLonLat,
   renderDelete,
   renderReport,
-  reportProduct
+  reportProduct,
+  renderGraph
 
 };

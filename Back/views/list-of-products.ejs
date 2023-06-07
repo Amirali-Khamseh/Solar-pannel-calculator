@@ -1,6 +1,4 @@
 <html lang="en" data-bs-theme="auto">
-
-
 <head>
     <script src="/docs/5.3/assets/js/color-modes.js"></script>
     <meta charset="utf-8">
@@ -62,21 +60,35 @@
                             <%= product.area %>
                         </td>
                         <td>
-                            <%= product.powerPeak%> w
+                            <%= product.powerPeak %> w
                         </td>
                         <td>
-                            <a class="text-primary" href="/products/<%= projectId %>/<%=product._id%>">Edit</a>
-                        </td>
-                        <td><a class="text-danger" href="/products/delete/<%= projectId %>/<%=product._id%>">Delete</a>
-                        </td>
-                        <td> <a class="text-info" href="/products/report/<%= projectId %>/<%=product._id%>">Report</a>
+                            <% if (product.status==='active' ) { %>
+                                <a class="text-primary" href="/products/<%= projectId %>/<%= product._id %>">Edit</a>
+                                <% } else { %>
+                                    <span class="text-muted" title="can not be modified">Edit</span>
+                                    <% } %>
                         </td>
                         <td>
-                            <%= product.status==='active' ?'✔':'❌' %>
+                            <a class="text-danger"
+                                href="/products/delete/<%= projectId %>/<%= product._id %>">Delete</a>
+                        </td>
+                        <td>
+                            <% if (product.status==='active' ) { %>
+                                <a class="text-info"
+                                    href="/products/report/<%= projectId %>/<%= product._id %>">Report</a>
+                                <% } else { %>
+                                    <a class="text-info"
+                                        href="/products/report/graph/<%= projectId %>/<%= product._id %>">Statistics</a>
+                                    <% } %>
+                        </td>
+                        <td>
+                            <%= product.status==='active' ? '✔' : '❌' %>
                         </td>
                     </tr>
-                    <% });%>
+                    <% }); %>
             </tbody>
+
         </table>
     </div>
     <div class=" row container-map-button d-flex flex-column col-6 justify-content-center align-items-center">
