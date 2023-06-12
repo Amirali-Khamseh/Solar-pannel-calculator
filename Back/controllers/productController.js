@@ -355,7 +355,7 @@ const reportProduct = async (req, res) => {
     // Render the view template
     const product = await Product.findById(id);
     const report = await DailyReport.findOne({ product: id });
-    res.status(200).render('report-product', {id, projectId, product, report });
+    res.status(200).render('report-product', { id, projectId, product, report });
   } catch (error) {
     console.error('Error getting products', error);
     res.status(500).json({ error: 'An error occurred' });
@@ -408,7 +408,7 @@ const historyReport = async (req, res) => {
         second: 'numeric'
       })} | Energy Output: ${report.electricityGenerated} kw \n`;
     });
-    
+
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -427,7 +427,8 @@ const historyReport = async (req, res) => {
   try {
     const products = await Product.find({ project: projectId });
     // Render the view template
-    res.status(200).render('list-of-products', { products, projectId });
+    // res.status(200).render('list-of-products', { products, projectId });
+    res.redirect(301,`/products/all/${projectId}`);
   } catch (error) {
     console.error('Error getting products', error);
     res.status(500).json({ error: 'An error occurred' });
