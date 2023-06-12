@@ -43,4 +43,10 @@ router.post('/report/:projectId/:id', productController.reportProduct);
 //Graphical representation of a read only project 
 router.get('/report/graph/:projectId/:id',productController.renderGraph);
 
+
+//History Report
+router.get('/report/history/:projectId/:id',productController.historyReport);
+
+
+
 module.exports = router;

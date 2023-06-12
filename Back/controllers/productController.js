@@ -1,7 +1,9 @@
 const Product = require('../models/Product');
 const nodemailer = require('nodemailer');
 const Project = require('../models/Project');
-const User = require('../models/User');
+const cron = require('node-cron');
+const DailyReport = require('../models/DailyReport');
+
 require('dotenv').config();
 
 
@@ -54,9 +56,17 @@ const getProductById = async (req, res) => {
   }
 }
 
+//getting the calculating the report 
+
+
 // Create a new product
 const createProduct = async (req, res) => {
-
+  const orientationMap = {
+    S: 0.75,  // Example value for south-facing orientation
+    N: 0.25,  // Example value for north-facing orientation
+    W: 0.5,   // Example value for west-facing orientation
+    E: 1.0    // Example value for east-facing orientation
+  };
   try {
     const { powerPeak, orientation, inclination, area, longitude, latitude, status, projectId } = req.body;
     const product = new Product({
@@ -70,22 +80,57 @@ const createProduct = async (req, res) => {
       powerPeak,
       project: projectId,
     });
-    await product.save();
-    try {
-      const products = await Product.find({ project: projectId });
-      // Render the view template
-      res.status(200).render('list-of-products', { products, projectId });
-    } catch (error) {
-      console.error('Error getting products', error);
-      res.status(500).json({ error: 'An error occurred' });
-    }
+    const savedProduct = await product.save();
+    // console.log('id' + savedProduct._id);
+    //activating cron job 
 
+    const creationTime = new Date();
+    const creationHour = creationTime.getHours();
+    const creationMinute = creationTime.getMinutes();
+
+    const cronExpression = `*/1 * * * *`;
+
+
+    cron.schedule(cronExpression, async () => {
+      const data = await fetch(`https://api.weatherbit.io/v2.0/current?lat=${latitude}&lon=${longitude}&key=${process.env.API_KEY}`);
+      const dataJSON = await data.json();
+      console.log(dataJSON.data[0].uv, dataJSON.data[0].solar_rad);
+      let dailyEnergy = {};
+      const modifiedDate = dataJSON.data[0].datetime.split(':')[0]
+      dailyEnergy.date = new Date(modifiedDate);
+      let orientationFactor = orientationMap[orientation];
+      let totalElectricity =
+        area *
+          powerPeak *
+          dataJSON.data[0].uv === 0 ? 0.01 : dataJSON.data[0].uv *
+            (inclination / 100) *
+            dataJSON.data[0].solar_rad === 0 ? 0.01 : dataJSON.data[0].solar_rad *
+        orientationFactor;
+      dailyEnergy.electricity = totalElectricity;
+
+      const dailyReport = new DailyReport({
+        date: dailyEnergy.date,
+        electricityGenerated: dailyEnergy.electricity,
+        product: product._id
+      });
+
+      try {
+        await dailyReport.save();
+      } catch (error) {
+        console.log(error);
+      }
+
+    });
+
+
+    const products = await Product.find({ project: projectId });
+    res.status(200).render('list-of-products', { products, projectId });
   } catch (error) {
     console.error('Error creating product', error);
     res.status(500).json({ error: 'An error occurred' });
   }
-};
 
+};
 
 //Render update product
 const renderUpdate = async (req, res) => {
@@ -182,11 +227,13 @@ const renderDelete = async (req, res) => {
 const renderReport = async (req, res) => {
   const { id, projectId } = req.params;
   const product = await Product.findById(id);
+  const report = await DailyReport.findOne({ product: id });
+
   if (!product) {
     return res.status(404).json({ error: 'Product not found' });
   }
-  //Fetching the last 24 hours in form of cron Job 
-  res.render('report-product', { id, projectId, product });
+
+  res.render('report-product', { id, projectId, product, report });
 }
 
 //Getting the user who have created the project 
@@ -302,11 +349,94 @@ const reportProduct = async (req, res) => {
   const usertoSend = await getCreatedByUser(projectId);
   sendMail(usertoSend, result, startDate, endDate);
   //4- Making the status of the product inactive
-  inactivatingStatus(id);
+  //inactivatingStatus(id);
+  try {
+    const products = await Product.find({ project: projectId });
+    // Render the view template
+    const product = await Product.findById(id);
+    const report = await DailyReport.findOne({ product: id });
+    res.status(200).render('report-product', {id, projectId, product, report });
+  } catch (error) {
+    console.error('Error getting products', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
 
 }
+
+//History Report 
+const historyReport = async (req, res) => {
+  const { id } = req.params;
+  const { projectId } = req.params;
+  const reports = await DailyReport.find({ product: id })
+  const usertoSend = await getCreatedByUser(projectId);
+  //Sending Email
+  try {
+    // Create a Nodemailer transporter with your email configuration
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'amiralikhamseh01@gmail.com',
+        pass: process.env.APP_KEY
+      }
+    });
+
+    // Compose the email
+    const mailOptions = {
+      from: 'amiralikhamseh01@gmail.com',
+      to: usertoSend.email,
+      subject: `Your History until ${new Date().toLocaleString('en-US', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      })}`,
+      text: ''
+    };
+
+
+    reports.forEach((report) => {
+      mailOptions.text += `Date: ${report.date.toLocaleString('en-US', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      })} | Energy Output: ${report.electricityGenerated} kw \n`;
+    });
+    
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+
+  // Making the status of the product inactive
+  inactivatingStatus(id);
+  try {
+    const products = await Product.find({ project: projectId });
+    // Render the view template
+    res.status(200).render('list-of-products', { products, projectId });
+  } catch (error) {
+    console.error('Error getting products', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+
+}
+
 //rendering visual grapghs for read only projects 
-const renderGraph = async (req , res)=>{
+const renderGraph = async (req, res) => {
   const { id, projectId } = req.params;
   const product = await Product.findById(id);
   if (!product) {
@@ -314,7 +444,7 @@ const renderGraph = async (req , res)=>{
   }
   //Fetching the last 24 hours in form of cron Job 
   res.render('report-graph', { id, projectId, product });
-} 
+}
 module.exports = {
   getAllProducts,
   getProductById,
@@ -328,6 +458,8 @@ module.exports = {
   renderDelete,
   renderReport,
   reportProduct,
-  renderGraph
+  renderGraph,
+  historyReport
+
 
 };

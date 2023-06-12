@@ -2,6 +2,7 @@
 <html lang="en" data-bs-theme="auto">
 
 
+
 <head>
     <script src="/docs/5.3/assets/js/color-modes.js"></script>
     <meta charset="utf-8">
@@ -21,7 +22,7 @@
     <script src="/JS/bootstrap.min.js" defer></script>
     <script src="/JS/bootstrap.js" defer></script>
     <script src="/JS/mapDelete.js" defer></script>
-    <script src="/JS/dateChecker.js" defer></script>
+
     <!-- Leaflet CDN -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -42,7 +43,7 @@
 
         <form action="/products/report/<%=projectId%>/<%= product._id %>" method="POST"
             class="d-flex flex-column gap-4 border border-primary p-4 rounded">
-
+            <label for="" class="bg-dark text-light rounded p-4 d-flex justify-content-center"> Solar Calculator</label>
             <div class="form-group">
                 <label for="exampleFormControlSelect2">Orientation of the panel</label>
                 <select class="form-control" id="exampleFormControlSelect1" name="orientation" readonly>
@@ -93,7 +94,7 @@
                     value="<%= product.latitude%>" readonly>
             </div>
             <!-- Start date and end date can be maximum the day when the product has been created -->
-            
+
             <div class="form-group">
                 <label for="startDate">From</label>
                 <input type="date" name="startDate" id="startDate" required
@@ -113,9 +114,45 @@
             </button>
         </form>
     </div>
-    <div class="container-report col-12 row">
-        <p>Result of daily Cron Job will happen here</p>
-    </div>
+
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="bg-dark text-light   " colspan='2'>Result of daily Report
+                </th>
+            </tr>
+            <tr>
+
+                <th scope="col">Date</th>
+                <th scope="col">Output </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <% if(report.date || report.electricityGenerated) { %>
+                        <%= report.date.toLocaleString('en-US', { weekday: 'short' , year: 'numeric' , month: 'short' ,
+                            day: 'numeric' , hour: 'numeric' , minute: 'numeric' , second: 'numeric' }) %>
+                </td>
+                <td>
+                    <%=report.electricityGenerated %> (KW)
+                </td>
+                <%}else {%>
+                    <p></p>
+                    <%} %>
+            </tr>
+
+
+        </tbody>
+    </table>
+    <button class="btn btn-warning">
+        <a href="/products/report/history/<%=projectId%>/<%= product._id %> " class="text-dark">Generate the History
+            Report</a>
+    </button>
+
+
 
 </body>
 
