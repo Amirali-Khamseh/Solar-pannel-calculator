@@ -116,41 +116,43 @@
     </div>
 
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th class="bg-dark text-light   " colspan='2'>Result of daily Report
-                </th>
-            </tr>
-            <tr>
+    <div class="alert alert-secondary">
+        <% if(report && (report.date || report.electricityGenerated)) { %>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="bg-dark text-light" colspan='3'>Result of daily Report</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Output</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <%= report.date.toLocaleString('en-US', { weekday: 'short' , year: 'numeric' ,
+                                month: 'short' , day: 'numeric' , hour: 'numeric' , minute: 'numeric' ,
+                                second: 'numeric' }) %>
+                        </td>
+                        <td>
+                            <%= report.electricityGenerated %> (KW)
+                        </td>
+                        <td> <button class="btn btn-warning">
+                                <a href="/products/report/history/<%=projectId%>/<%= product._id %> "
+                                    class="text-dark">Generate the History
+                                    Report</a>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <% } else { %>
+                <p>Refresh the page after 1 min for daily report</p>
+                <% } %>
+    </div>
 
-                <th scope="col">Date</th>
-                <th scope="col">Output </th>
 
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <% if(report.date || report.electricityGenerated) { %>
-                        <%= report.date.toLocaleString('en-US', { weekday: 'short' , year: 'numeric' , month: 'short' ,
-                            day: 'numeric' , hour: 'numeric' , minute: 'numeric' , second: 'numeric' }) %>
-                </td>
-                <td>
-                    <%=report.electricityGenerated %> (KW)
-                </td>
-                <%}else {%>
-                    <p></p>
-                    <%} %>
-            </tr>
-
-
-        </tbody>
-    </table>
-    <button class="btn btn-warning">
-        <a href="/products/report/history/<%=projectId%>/<%= product._id %> " class="text-dark">Generate the History
-            Report</a>
-    </button>
 
 
 

@@ -55,6 +55,20 @@ signin = async (req, res) => {
     }
 };
 
+//Dashboard
+const dashboard = async (req, res) => {
+    try {
+        const userId = req.session.userId;
+        const user = await User.findOne({ _id: userId });
+        // console.log(user, userId);
+         res.status(200).render('project', { user });
+    } catch (error) {
+        console.error('Not authorized', error);
+        res.status(400).render('400');
+    }
+}
+
+
 // Update user by ID GET for rendering the update form
 const updateUserGet = async (req, res) => {
     try {
@@ -140,4 +154,4 @@ const deleteUser = async (req, res) => {
 
 
 module.exports =
- { signin, signup, updateUser, deleteUser, updateUserGet, deleteUserGet };
+    { signin, signup, updateUser, deleteUser, updateUserGet, deleteUserGet, dashboard };

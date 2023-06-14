@@ -47,6 +47,8 @@ router.get('/report/graph/:projectId/:id',productController.renderGraph);
 //History Report
 router.get('/report/history/:projectId/:id',productController.historyReport);
 
+router.get('/report/graph/data/:projectId/:id',productController.renderGraphJSON);
+
 
 
 module.exports = router;

@@ -1,1 +1,83 @@
-<p>Only the graph will be previewed for the cron jobs </p>
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+
+
+
+<head>
+    <script src="/docs/5.3/assets/js/color-modes.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A solar panel app created for the database and web techniques at TU Chemnitz">
+    <meta name="generator" content="Hugo 0.111.3">
+    <title>Solar panel calculator</title>
+
+    <!-- Custom styles for ejs pages -->
+    <link rel="stylesheet" href="/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="/CSS/sign-in.css">
+    <link rel="stylesheet" href="/CSS/swiper.css">
+    <link rel="stylesheet" href="/CSS/navbar.css">
+    <link rel="stylesheet" href="/CSS/nav-user.css">
+    <link rel="stylesheet" href="/CSS/copyright.css">
+    <link rel="stylesheet" href="/CSS/map.css">
+    <script src="/JS/bootstrap.min.js" defer></script>
+    <script src="/JS/bootstrap.js" defer></script>
+    <script src="/JS/graph.js" defer></script>
+
+    <!-- Leaflet CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</head>
+
+<body>
+
+    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+    <div>
+
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+
+                    <th scope="col">Date</th>
+                    <th scope="col">Energy Generated</th>
+
+                </tr>
+            </thead>
+
+            <% for(let key in reports) { const report=reports[key]; %>
+
+
+                <tbody>
+                    <tr>
+
+
+                        <td>
+                            <%= report.date.toLocaleString('en-US', {
+                                weekday: 'short',
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                second: 'numeric'
+                              }) %>
+                        </td>
+                        <td>
+                            <%= report.electricityGenerated %>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+                <% } %>
+        </table>
+    </div>
+
+
+
+</body>
+
+</html>

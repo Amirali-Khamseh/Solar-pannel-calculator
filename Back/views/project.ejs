@@ -1,59 +1,85 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
 
-
 <%- include('./partials/head') %>
-    <!-- /Images/1.jpg" -->
 
-    <body class="index-container">
 
+
+    <body>
         <%- include('./partials/nav') %>
-            <swiper-container class="swiper-container">
-                <swiper-slide class="swiper-slide">
-                    <img src="/Images/1.jpg" alt="">
-                </swiper-slide>
-                <swiper-slide class="swiper-slide">
-                    <img src="/Images/2.jpg" alt="">
-                </swiper-slide>
-                <swiper-slide>
-                    <img src="/Images/3.jpg" alt="">
-                </swiper-slide class="swiper-slide">
-            </swiper-container>
-            <table class="table table-sm table-dark">
-                <thead>
-                    <tr>
-
-                        <th scope="col">User</th>
-                        <th scope="col">Project</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <button type="button" class="btn btn-success">
-                                <a href="/auth/update/<%= user._id %>">Edit data</a></button>
-                        </td>
-                        <td> <button type="button" class="btn btn-success"><a href="/projects/create">Create a
-                                    Project</a></button></td>
-
-
-                    </tr>
-                    <tr>
-                        <td>
-                            <button type="button" class="btn btn-danger"><a href="/auth/delete/<%= user._id %>">Delete
-                                    account</a></button>
-                        </td>
-                        <td> <button type="button" class="btn btn-primary"><a href="/projects">List of
-                                    Projects</a></button></td>
-
-
-                    </tr>
-                </tbody>
-            </table>
-
-
-
-            <%- include('./partials/copyright') %>
+            <div class="container-fluid p-0 d-flex justify-content-center container-all">
+                <div class="table-container row col-12 bg-dark">
+                    <table class="table table-sm table-dark rounded ">
+                        <thead>
+                            <tr class="d-flex justify-content-center">
+                                <th scope="col">User's Dashboard</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="d-flex justify-content-center">
+                                <td class="col-6">
+                                    <div class="card text-dark w-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title align-center">Edit</h5>
+                                            <p class="card-text">In this section you can change your Email, Password,
+                                                and
+                                                Username.</p>
+                                            <a href="/auth/update/<%= user._id %>"
+                                                class="btn btn-info w-100 text-white">Update my
+                                                data</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="d-flex justify-content-center">
+                                <td class="col-6">
+                                    <div class="card text-dark w-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title align-center">Delete</h5>
+                                            <p class="card-text">You can remove your personal account.</p>
+                                            <a href="/auth/delete/<%= user._id %>"
+                                                class="btn btn-danger w-100">Delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-dark rounded ">
+                        <thead>
+                            <tr class="d-flex justify-content-center">
+                                <th scope="col">Projects' dashboard</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="d-flex justify-content-center">
+                                <td class="col-6">
+                                    <div class="card text-dark w-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title align-center">Create Project</h5>
+                                            <p class="card-text">Via this part you can create projects and manage them.
+                                            </p>
+                                            <a href="/projects/create" class="btn btn-success w-100">Create Project</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="d-flex justify-content-center">
+                                <td class="col-6">
+                                    <div class="card text-dark w-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title align-center">List of Projects</h5>
+                                            <p class="card-text">You can access all of the projects via this section.
+                                            </p>
+                                            <a href="/projects" class="btn btn-warning w-100 text-white">Projects</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
 
     </body>

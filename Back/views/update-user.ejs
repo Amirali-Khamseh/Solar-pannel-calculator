@@ -5,7 +5,7 @@
 <%- include('./partials/head') %>
 
     <body class="text-center">
-        <%- include('./partials/nav') %>
+        <%- include('./partials/dashboard-nav') %>
             <main class="form-signin w-100 m-auto">
                 <form action="/auth/update/<%= user._id  %>" method="POST">
                     <h1 class="h3 mb-3 fw-normal">Update user</h1>
@@ -28,7 +28,7 @@
 
 
 
-                    <button class="w-100 btn btn-lg  btn-info" type="submit">Update</button>
+                    <button class="w-100 btn btn-lg  btn-info text-white" type="submit">Update</button>
 
                 </form>
 
