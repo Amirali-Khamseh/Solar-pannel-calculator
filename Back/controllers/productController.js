@@ -10,7 +10,7 @@ require('dotenv').config();
 //Rendring the creating page for product
 const renderCreate = (req, res) => {
   const { id } = req.params;
-  console.log(id);
+  // console.log(id);
   const projectId = id;
   res.render('create-product', { projectId });
 }
@@ -56,7 +56,6 @@ const getProductById = async (req, res) => {
   }
 }
 
-//getting the calculating the report 
 
 
 // Create a new product
@@ -87,7 +86,7 @@ const createProduct = async (req, res) => {
     const creationTime = new Date();
     const creationHour = creationTime.getHours();
     const creationMinute = creationTime.getMinutes();
-
+   
     const cronExpression = `*/1 * * * *`;
 
 

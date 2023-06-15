@@ -10,16 +10,16 @@
                 <form action="/auth/update/<%= user._id  %>" method="POST">
                     <h1 class="h3 mb-3 fw-normal text-white">Update user</h1>
 
-                    <div class="form-floating">
+                    <div class="form-floating mb-2">
                         <input type="text" class="form-control" id="floatingInput" name="name" value="<%=user.name %>">
                         <label for="floatingInput">Name </label>
                     </div>
-                    <div class="form-floating">
+                    <div class="form-floating mt-2">
                         <input type="email" class="form-control" id="floatingInput" name="email"
                             value="<%=user.email %>">
                         <label for="floatingInput">Email address</label>
                     </div>
-                    <div class="form-floating">
+                    <div class="form-floating mt-2">
                         <input type="password" class="form-control" id="floatingPassword" name="password" required>
                         <label for="floatingPassword">Password</label>
                     </div>

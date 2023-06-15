@@ -1,3 +1,8 @@
+*,
+a {
+    font-size: 1rem;
+}
+
 #dashboard {
     margin-top: 1.5rem;
     border: 1px solid whitesmoke;
@@ -10,7 +15,6 @@
     transition: transform 0.3s 0.3s;
     color: rgb(187, 187, 34);
 }
-
 
 @media (max-width:900px) {
     #dashboard {
@@ -29,4 +33,6 @@
         transition: transform 0.3s 0.3s;
         color: rgb(187, 187, 34);
     }
+
+
 }

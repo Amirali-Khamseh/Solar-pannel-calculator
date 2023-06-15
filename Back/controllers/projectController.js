@@ -66,9 +66,11 @@ const getProjectById = async (req, res) => {
 
 //Rendering the update page for project 
 
-const renderUpdate = (req, res) => {
+const renderUpdate = async (req, res) => {
     const id = req.params.id;
-    res.render('edit-project', { id })
+    const project = await Project.findById({ _id: id })
+ 
+    res.render('edit-project', { id, project })
 };
 
 // Update a project by ID

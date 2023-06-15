@@ -4,23 +4,29 @@
 
 <%- include('./partials/head') %>
 
-    <body class="text-center">
+    <body>
+        <%- include('./partials/dashboard-nav') %>
+            <div class="container">
+                <div class="row">
+                    <form action="/projects/update/<%=id%>" method="POST" class="mx-auto">
+                        <div class=" form-group">
+                            <label for="exampleFormControlInput1" class="text-white">Project's name</label>
+                            <input type="text" class="form-control" id="exampleFormControlInput1"
+                                value="<%= project.title %>" name="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1" class="text-white">Project's Description</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description">
+                                   <%= project.description.trim() %>
+                            </textarea>
+                        </div>
 
+                        <button class="btn btn-primary w-100 mt-2">Update</button>
+                    </form>
+                </div>
+            </div>
 
-        <form action="/projects/update/<%=id%>" method="POST" class="mx-auto">
-            <div class=" form-group">
-                <label for="exampleFormControlInput1">Project's name</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="solar 1"
-                    name="title">
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">Project's Description</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"
-                    placeholder="This projects is ...."></textarea>
-            </div>
-            <button class="btn btn-primary">Update</button>
-        </form>
-        <%- include('./partials/copyright') %>
+            <%- include('./partials/copyright') %>
     </body>
 
 </html>

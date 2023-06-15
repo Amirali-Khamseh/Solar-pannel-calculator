@@ -4,39 +4,44 @@
 
 <%- include('./partials/head') %>
 
-    <body class="container d-flex flex-column">
-        <div class="row col-12">
-            <table class="table table-striped table-dark">
-                <thead>
-                    <tr>
-                        <th scope="col">Project's name</th>
-                        <th scope="col">Project's description</th>
-                        <th scope="col">Edit project</th>
+    <body>
+        <%- include('./partials/dashboard-nav') %>
+            <div class="container ">
+                <div class="row ">
+                    <table class="table table-light">
+                        <thead>
+                            <tr>
+                                <th scope="col">Project's name</th>
+                                <th scope="col">Project's description</th>
+                                <th scope="col">Edit project</th>
 
 
-                    </tr>
-                </thead>
-                <tbody>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                    <tr>
-                        <td>
-                            <%= project.title %>
-                        </td>
-                        <td>
-                            <%= project.description %>
-                        </td>
+                            <tr>
+                                <td>
+                                    <%= project.title %>
+                                </td>
+                                <td>
+                                    <%= project.description %>
+                                </td>
 
-                        <td>
-                            <a href="/projects/update/<%= project._id %>">Edit 🔄</a>
-                        </td>
-                    </tr>
+                                <td>
+                                    <a class="text-dark" href="/projects/update/<%= project._id %>">Edit 🔄</a>
+                                </td>
+                            </tr>
 
-                </tbody>
-            </table>
-            <button class="btn btn-primary"> <a href="/products/create/<%= project._id %>">Create Product🛰 </a>
-            </button>
-            <button class="btn btn-success"> <a href="/products/all/<%= project._id %>">List of Products 📊</a> </button>
-        </div>
+                        </tbody>
+                    </table>
+                    <a class="btn btn-primary" href="/products/create/<%= project._id %>">Create Product🛰 </a>
+
+                    <a class="btn btn-success" href="/products/all/<%= project._id %>">List of Products 📊</a>
+
+                </div>
+            </div>
+
 
     </body>
 
