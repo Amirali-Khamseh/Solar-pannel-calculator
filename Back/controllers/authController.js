@@ -61,7 +61,7 @@ const dashboard = async (req, res) => {
         const userId = req.session.userId;
         const user = await User.findOne({ _id: userId });
         // console.log(user, userId);
-         res.status(200).render('project', { user });
+        res.status(200).render('project', { user });
     } catch (error) {
         console.error('Not authorized', error);
         res.status(400).render('400');
@@ -83,43 +83,32 @@ const updateUserGet = async (req, res) => {
         res.status(500).json({ error: 'An error occurred' });
     }
 };
+
+
+
+
 // Update user by ID POST 
 const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { name, email, password } = req.body;
+    const updatedFields = {};
     try {
-        const { id } = req.params;
-        const { name, email, password } = req.body;
-        const updatedFields = {};
+        let user = await User.findById(id);
+        updatedFields.name = name;
+        updatedFields.email = email;
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            updatedFields.password = hashedPassword;
+        }
+        const update = await User.findByIdAndUpdate(id, updatedFields, { new: true });
+        res.render('project', { user });
 
-        if (name) {
-            updatedFields.name = name;
-        }
-        if (email) {
-            updatedFields.email = email;
-        }
-        if (password) {
-            // Check if the password field has been modified
-            const user = await User.findById(id);
-            if (!user) {
-                return res.status(404).render('update-user');
-            }
-            const passwordMatch = await bcrypt.compare(password, user.password);
-            if (!passwordMatch) {
-                // Rehash the updated password
-                const hashedPassword = await bcrypt.hash(password, 10);
-                updatedFields.password = hashedPassword;
-            }
-        }
 
-        const user = await User.findByIdAndUpdate(id, updatedFields, { new: true });
-        if (!user) {
-            return res.status(404).render('update-user');
-        }
-
-        res.status(200).json(user);
-    } catch (error) {
-        console.error('Error updating user', error);
-        res.status(500).json({ error: 'An error occurred' });
+    } catch (err) {
+        console.log(err);
     }
+
 };
 
 

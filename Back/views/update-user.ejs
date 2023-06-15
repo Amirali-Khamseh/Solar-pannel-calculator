@@ -8,21 +8,19 @@
         <%- include('./partials/dashboard-nav') %>
             <main class="form-signin w-100 m-auto">
                 <form action="/auth/update/<%= user._id  %>" method="POST">
-                    <h1 class="h3 mb-3 fw-normal">Update user</h1>
+                    <h1 class="h3 mb-3 fw-normal text-white">Update user</h1>
 
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="Amir Khamseh "
-                            name="name">
+                        <input type="text" class="form-control" id="floatingInput" name="name" value="<%=user.name %>">
                         <label for="floatingInput">Name </label>
                     </div>
                     <div class="form-floating">
-                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"
-                            name="email">
+                        <input type="email" class="form-control" id="floatingInput" name="email"
+                            value="<%=user.email %>">
                         <label for="floatingInput">Email address</label>
                     </div>
                     <div class="form-floating">
-                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
-                            name="password">
+                        <input type="password" class="form-control" id="floatingPassword" name="password" required>
                         <label for="floatingPassword">Password</label>
                     </div>
 
