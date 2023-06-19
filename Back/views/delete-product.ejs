@@ -12,12 +12,9 @@
 
     <!-- Custom styles for ejs pages -->
     <link rel="stylesheet" href="/CSS/bootstrap.min.css">
-    <link rel="stylesheet" href="/CSS/sign-in.css">
-    <link rel="stylesheet" href="/CSS/swiper.css">
-    <link rel="stylesheet" href="/CSS/navbar.css">
-    <link rel="stylesheet" href="/CSS/nav-user.css">
-    <link rel="stylesheet" href="/CSS/copyright.css">
+    <!-- <link rel="stylesheet" href="/CSS/nav-user.css"> -->
     <link rel="stylesheet" href="/CSS/map.css">
+    <link rel="stylesheet" href="/CSS/edit-product.css">
     <script src="/JS/bootstrap.min.js" defer></script>
     <script src="/JS/bootstrap.js" defer></script>
     <script src="/JS/mapDelete.js" defer></script>
@@ -29,78 +26,87 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
+
 </head>
 
 <body>
-    <div class="container d-flex">
+    <div class="container">
+        <ul>
+            <li><a href="/dashboard" class="dashboard-custom text-white">Dashboard</a></li>
+        </ul>
+        <div class="row">
+            <div class="container-update">
+                <div id="map" class="col-6">
 
-        <div id="map">
+                </div>
 
+                <form action="/products/delete/<%=projectId%>/<%= product._id %>" method="POST"
+                    class="col-6 d-flex flex-column   p-4 rounded">
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect2">Orientation of the panel</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="orientation" disabled
+                            readonly>
+                            <option value="N" <%=product.orientation==='N' ? 'selected' : '' %>>North</option>
+                            <option value="E" <%=product.orientation==='E' ? 'selected' : '' %>>East</option>
+                            <option value="S" <%=product.orientation==='S' ? 'selected' : '' %>>South</option>
+                            <option value="W" <%=product.orientation==='W' ? 'selected' : '' %>>West</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pi_input">Inclination degree</label>
+                        <input id="pi_input" type="range" min="0" max="90" step="0.1" name="inclination" disabled
+                            readonly value="<%= product.inclination %>" />
+                        <p>Value: <output id="value"></output> &deg;</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect">Power peak</label>
+                        <select class="form-control" id="exampleFormControlSelect" name="powerPeak" disabled>
+                            <option value="440" <%=product.powerPeak===440 ? 'selected' : '' %>>440 Watt peak</option>
+                            <option value="580" <%=product.powerPeak===580 ? 'selected' : '' %>>580 Watt peak</option>
+                            <option value="630" <%=product.powerPeak===630 ? 'selected' : '' %>>630 Watt peak</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area">Area occupied by pannel</label>
+                        <input type="number" placeholder="Units in square meter" id="area" required name="area" disabled
+                            value="<%=product.area%>">
+
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" value="active" name="status">
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="projectId" value="<%=projectId%>" />
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label for="longitude">Longitude</label>
+                        <input type="number" placeholder="0" id="longitude" required name="longitude"
+                            value="<%= product.longitude%>" readonly>
+                        <br>
+                        <label for="latitude">Latitude</label>
+                        <input type="number" placeholder="0" id="latitude" required name="latitude"
+                            value="<%= product.latitude%>" readonly>
+                    </div>
+
+
+                    <button class="btn btn-danger" type="submit">
+
+                        Delete
+
+                    </button>
+                </form>
+            </div>
         </div>
 
-        <form action="/products/delete/<%=projectId%>/<%= product._id %>" method="POST"
-            class="d-flex flex-column gap-4 border border-primary p-4 rounded">
-
-            <div class="form-group">
-                <label for="exampleFormControlSelect2">Orientation of the panel</label>
-                <select class="form-control" id="exampleFormControlSelect1" name="orientation" disabled readonly>
-                    <option value="N" <%=product.orientation==='N' ? 'selected' : '' %>>North</option>
-                    <option value="E" <%=product.orientation==='E' ? 'selected' : '' %>>East</option>
-                    <option value="S" <%=product.orientation==='S' ? 'selected' : '' %>>South</option>
-                    <option value="W" <%=product.orientation==='W' ? 'selected' : '' %>>West</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="pi_input">Inclination degree</label>
-                <input id="pi_input" type="range" min="0" max="90" step="0.1" name="inclination" disabled readonly
-                    value="<%= product.inclination %>" />
-                <p>Value: <output id="value"></output> &deg;</p>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlSelect">Power peak</label>
-                <select class="form-control" id="exampleFormControlSelect" name="powerPeak" disabled>
-                    <option value="440" <%=product.powerPeak===440 ? 'selected' : '' %>>440 Watt peak</option>
-                    <option value="580" <%=product.powerPeak===580 ? 'selected' : '' %>>580 Watt peak</option>
-                    <option value="630" <%=product.powerPeak===630 ? 'selected' : '' %>>630 Watt peak</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="area">Area occupied by pannel</label>
-                <input type="number" placeholder="Units in square meter" id="area" required name="area" disabled
-                    value="<%=product.area%>">
-
-            </div>
-
-            <div class="form-group">
-                <input type="hidden" value="active" name="status">
-            </div>
-            <div class="form-group">
-                <input type="hidden" name="projectId" value="<%=projectId%>" />
-            </div>
-
-
-
-            <div class="form-group">
-                <label for="longitude">Longitude</label>
-                <input type="number" placeholder="0" id="longitude" required name="longitude"
-                    value="<%= product.longitude%>" readonly>
-                <br>
-                <label for="latitude">Latitude</label>
-                <input type="number" placeholder="0" id="latitude" required name="latitude"
-                    value="<%= product.latitude%>" readonly>
-            </div>
-
-
-            <button class="btn btn-danger" type="submit">
-
-                Delete
-
-            </button>
-        </form>
     </div>
-    <%- include('./partials/copyright') %>
+
 </body>
 
 </html>

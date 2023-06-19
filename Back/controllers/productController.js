@@ -86,7 +86,7 @@ const createProduct = async (req, res) => {
     const creationTime = new Date();
     const creationHour = creationTime.getHours();
     const creationMinute = creationTime.getMinutes();
-   
+
     const cronExpression = `*/1 * * * *`;
 
 
@@ -353,8 +353,8 @@ const reportProduct = async (req, res) => {
     const products = await Product.find({ project: projectId });
     // Render the view template
     const product = await Product.findById(id);
-    const report = await DailyReport.findOne({ product: id });
-    res.status(200).render('report-product', { id, projectId, product, report });
+    //const report = await DailyReport.findOne({ product: id });
+    res.status(200).render('report-product', { id, projectId, product });
   } catch (error) {
     console.error('Error getting products', error);
     res.status(500).json({ error: 'An error occurred' });
@@ -452,6 +452,13 @@ const renderGraphJSON = async (req, res) => {
   const reports = await DailyReport.find({ product: id })
   res.json({ reports });
 }
+
+const dailyDataReport = async (req, res) => {
+  const productId = req.params.id;
+  const report = await DailyReport.find({ product: productId })
+  res.json({ data: report[report.length - 1] })
+
+}
 module.exports = {
   getAllProducts,
   getProductById,
@@ -467,7 +474,6 @@ module.exports = {
   reportProduct,
   renderGraph,
   historyReport,
-  renderGraphJSON
-
-
+  renderGraphJSON,
+  dailyDataReport
 };

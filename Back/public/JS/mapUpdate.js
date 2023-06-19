@@ -2,7 +2,7 @@
 const projectId = window.location.pathname.split('/')[2];
 const id = window.location.pathname.split('/')[3];
 console.log(id);
-var map = L.map('map').setView([54, 15], 4);
+var map = L.map('map').setView([0, 0], 6);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'

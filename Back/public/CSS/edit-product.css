@@ -1,0 +1,106 @@
+ body {
+     background: #000;
+     color: whites;
+ }
+
+ label {
+     color: white;
+     font-weight: bold;
+ }
+
+ #value {
+     color: white;
+ }
+
+ .container {
+     width: 100%;
+     margin-top: 20px;
+
+ }
+
+ .container-update {
+     display: flex;
+     border-radius: 2rem;
+
+ }
+
+ .border-primary {
+     border: 1px solid #007bff;
+ }
+
+ .rounded {
+     border-radius: 5px;
+ }
+
+ .form-group {
+     margin-bottom: 10px;
+ }
+
+ .btn-primary {
+     background-color: #007bff;
+     color: #fff;
+     border: none;
+     padding: 8px 20px;
+     border-radius: 4px;
+ }
+
+
+ a {
+     text-decoration: unset;
+
+ }
+
+ a:visited {
+     color: unset;
+ }
+
+ .container {
+     border: 1px solid #2EFF2E;
+     border-radius: 2rem;
+ }
+
+ .dashboard-custom {
+     background: #2EFF2E;
+     text-decoration: unset;
+     padding: 1.5rem;
+     border-radius: 2rem;
+     margin-top: 2rem;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+
+ }
+
+ .dashboard-custom:visited {
+     color: unset;
+ }
+
+ form {
+     height: 70%;
+ }
+
+ #pi_input,
+ #area,
+ #longitude,
+ #latitude {
+     width: 100%;
+ }
+
+
+ @media(max-width:1200px) {
+     .container-update {
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+
+     }
+
+     #map {
+         width: 70%;
+     }
+
+
+     .dashboard-custom {
+         margin-bottom: 2.5rem;
+     }
+ }

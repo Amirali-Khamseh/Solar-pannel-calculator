@@ -31,12 +31,10 @@ if (path.includes('/products/all/')) {
         projectId = pathParts[createIndex + 1];
     }
 } else {
-    // Handle other conditions or fallback behavior here
-    // For example, if none of the conditions match, you can set default values or handle the case accordingly
+  console.log('unkown path');
 }
 
-console.log(projectId);
-console.log(productId);
+
 
 var map = L.map('map').setView([54, 15], 4);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

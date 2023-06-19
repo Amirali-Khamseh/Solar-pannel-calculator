@@ -1,0 +1,25 @@
+body {
+    background: #000;
+}
+
+.container-product-list {
+    margin: 50px auto;
+    border: 1px solid #2EFF2E;
+    border-radius: 2rem;
+}
+
+.dashboard-custom {
+    background: #2EFF2E;
+    text-decoration: unset;
+    padding: 1.5rem;
+    border-radius: 2rem;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.dashboard-custom:visited {
+    color: unset;
+}

@@ -10,11 +10,7 @@
 
     <!-- Custom styles for ejs pages -->
     <link rel="stylesheet" href="/CSS/bootstrap.min.css">
-    <link rel="stylesheet" href="/CSS/sign-in.css">
-    <link rel="stylesheet" href="/CSS/swiper.css">
-    <link rel="stylesheet" href="/CSS/navbar.css">
-    <link rel="stylesheet" href="/CSS/nav-user.css">
-    <link rel="stylesheet" href="/CSS/copyright.css">
+    <link rel="stylesheet" href="/CSS/product-list.css">
     <link rel="stylesheet" href="/CSS/map.css">
     <script src="/JS/bootstrap.min.js" defer></script>
     <script src="/JS/bootstrap.js" defer></script>
@@ -30,83 +26,78 @@
 </head>
 
 <body>
-    <!-- TODO -->
-    <%- include('./partials/dashboard-nav') %>
-        <div class="container border border-success">
 
-            <div class="row col-8 justify-content-center align-items-center mx-auto p-4 ">
-                <div id="map" class="w-100"></div>
-                <div class="table-responsive w-100">
-                    <table class="table table-dark">
-                        <thead>
+    <div class="container  container-product-list">
+        <ul>
+            <li><a href="/dashboard" class="dashboard-custom text-white">Dashboard</a></li>
+        </ul>
+        <div class="row d-flex justify-content-center align-items-center mx-auto p-4">
+
+            <div id="map" class="col-md-6"></div>
+            <div class="table-responsive col-md-6">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">Orientation</th>
+                            <th scope="col">Inclination</th>
+                            <th scope="col">Area M<sup>2</sup></th>
+                            <th scope="col">Power peak</th>
+                            <th scope="col" class="text-primary">Edit</th>
+                            <th scope="col" class="text-danger">Delete</th>
+                            <th scope="col" class="text-info">Report</th>
+                            <th scope="col" class="text-warning">Editable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% products.forEach(product=> { %>
                             <tr>
-
-                                <th scope="col">Orientation </th>
-                                <th scope="col">Inclination </th>
-                                <th scope="col">Area M<sup>2</sup></th>
-                                <th scope="col">Power peak </th>
-                                <th scope="col" class="text-primary">Edit </th>
-                                <th scope="col" class="text-danger">Delete</th>
-                                <th scope="col" class="text-info">Report</th>
-                                <th scope="col" class="text-warning">Editable</th>
-
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% products.forEach(product=> { %>
-                                <tr>
-                                    <td>
-                                        <%= product.orientation %>
-                                    </td>
-                                    <td>
-                                        <%= product.inclination %>
-                                    </td>
-                                    <td>
-                                        <%= product.area %>
-                                    </td>
-                                    <td>
-                                        <%= product.powerPeak %> w
-                                    </td>
-                                    <td>
-                                        <% if (product.status==='active' ) { %>
-                                            <a class="text-primary"
-                                                href="/products/<%= projectId %>/<%= product._id %>">Edit</a>
-                                            <% } else { %>
-                                                <span class="text-muted" title="can not be modified">Edit</span>
-                                                <% } %>
-                                    </td>
-                                    <td>
-                                        <a class="text-danger"
-                                            href="/products/delete/<%= projectId %>/<%= product._id %>">Delete</a>
-                                    </td>
-                                    <td>
-                                        <% if (product.status==='active' ) { %>
+                                <td>
+                                    <%= product.orientation %>
+                                </td>
+                                <td>
+                                    <%= product.inclination %>
+                                </td>
+                                <td>
+                                    <%= product.area %>
+                                </td>
+                                <td>
+                                    <%= product.powerPeak %> w
+                                </td>
+                                <td>
+                                    <% if (product.status==='active' ) { %>
+                                        <a class="text-primary"
+                                            href="/products/<%= projectId %>/<%= product._id %>">Edit</a>
+                                        <% } else { %>
+                                            <span class="text-muted" title="can not be modified">Edit</span>
+                                            <% } %>
+                                </td>
+                                <td>
+                                    <a class="text-danger"
+                                        href="/products/delete/<%= projectId %>/<%= product._id %>">Delete</a>
+                                </td>
+                                <td>
+                                    <% if (product.status==='active' ) { %>
+                                        <a class="text-info"
+                                            href="/products/report/<%= projectId %>/<%= product._id %>">Report</a>
+                                        <% } else { %>
                                             <a class="text-info"
-                                                href="/products/report/<%= projectId %>/<%= product._id %>">Report</a>
-                                            <% } else { %>
-                                                <a class="text-info"
-                                                    href="/products/report/graph/<%= projectId %>/<%= product._id %>">Statistics</a>
-                                                <% } %>
-                                    </td>
-                                    <td>
-                                        <%= product.status==='active' ? '✔' : '❌' %>
+                                                href="/products/report/graph/<%= projectId %>/<%= product._id %>">Statistics</a>
+                                            <% } %>
+                                </td>
+                                <td>
+                                    <%= product.status==='active' ? '✔' : '❌' %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                                <tr class="w-100 ">
+                                    <td colspan="8" class="w-100">
+                                        <a class="btn btn-primary w-100" href="/products/create/<%= projectId %>">Create
+                                            Product🛰</a>
                                     </td>
                                 </tr>
-                                <% }); %>
-                        </tbody>
-
-                    </table>
-                    <a class="btn btn-primary w-100" href="/products/create/<%= projectId %>">Create Product🛰 </a>
-                </div>
-
+                    </tbody>
+                </table>
             </div>
         </div>
-
-
-
-
-
-
-
+    </div>
 </body>
