@@ -1,0 +1,39 @@
+body {
+    background: #000;
+    color: white;
+}
+
+.graph-parents {
+    margin-top: 4rem;
+}
+
+.button-dashboard {
+    background: #2EFF2E;
+    height: 4rem;
+    border-radius: 2rem;
+}
+
+.button-dashboard:hover {
+    background: #3bd93b;
+    transform: scale(0.9);
+    transition: transform 0.4s ease;
+}
+
+.button-dashboard a {
+    text-decoration: unset;
+
+}
+
+.button-dashboard a:visited {
+    color: unset;
+
+}
+
+@media(max-width:1200px) {
+    .table-report {
+        margin-top: 4rem;
+        border: 2px solid white;
+        border-radius: 2rem;
+        padding: 1rem;
+    }
+}

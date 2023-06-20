@@ -13,12 +13,7 @@
 
     <!-- Custom styles for ejs pages -->
     <link rel="stylesheet" href="/CSS/bootstrap.min.css">
-    <link rel="stylesheet" href="/CSS/sign-in.css">
-    <link rel="stylesheet" href="/CSS/swiper.css">
-    <link rel="stylesheet" href="/CSS/navbar.css">
-    <link rel="stylesheet" href="/CSS/nav-user.css">
-    <link rel="stylesheet" href="/CSS/copyright.css">
-    <link rel="stylesheet" href="/CSS/map.css">
+    <link rel="stylesheet" href="/CSS/product-graph.css">
     <script src="/JS/bootstrap.min.js" defer></script>
     <script src="/JS/bootstrap.js" defer></script>
     <script src="/JS/graph.js" defer></script>
@@ -30,50 +25,53 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 </head>
 
 <body>
 
-    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
-    <div>
+    <div class="container-fluid d-flex justify-content-center">
 
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
+        <div class="row graph-parents w-100  d-flex justify-content-center  ">
+            <div class=" m-4 d-flex justify-content-center button-dashboard
+            align-items-center">
+                <a href="/dashboard"> dashboard</a>
+            </div>
+            <canvas id="myChart" class="col-4 bg-light rounded" style="max-width: 600px;"></canvas>
+            <div class="col-6 table-report">
 
-                    <th scope="col">Date</th>
-                    <th scope="col">Energy Generated</th>
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
 
-                </tr>
-            </thead>
+                            <th scope="col" class="text-dark bg-light">Date</th>
+                            <th scope="col" class="text-dark bg-light">Energy Generated</th>
 
-            <% for(let key in reports) { const report=reports[key]; %>
+                        </tr>
+                    </thead>
+
+                    <% for(let key in reports) { const report=reports[key]; %>
+                        <tbody>
+                            <tr>
 
 
-                <tbody>
-                    <tr>
+                                <td class="text-light">
+                                    <%= report.date.toLocaleString('en-US', { weekday: 'short' , year: 'numeric' ,
+                                        month: 'short' , day: 'numeric' }) %>
+                                </td>
 
+                                <td class="text-light">
+                                    <%= report.electricityGenerated %> KW
+                                </td>
+                            </tr>
 
-                        <td>
-                            <%= report.date.toLocaleString('en-US', {
-                                weekday: 'short',
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                                hour: 'numeric',
-                                minute: 'numeric',
-                                second: 'numeric'
-                              }) %>
-                        </td>
-                        <td>
-                            <%= report.electricityGenerated %>
-                        </td>
-                    </tr>
+                        </tbody>
 
-                </tbody>
+                        <% } %>
+                </table>
+            </div>
 
-                <% } %>
-        </table>
+        </div>
     </div>
 
 

@@ -80,17 +80,14 @@ const createProduct = async (req, res) => {
       project: projectId,
     });
     const savedProduct = await product.save();
-    // console.log('id' + savedProduct._id);
-    //activating cron job 
-
-    const creationTime = new Date();
-    const creationHour = creationTime.getHours();
-    const creationMinute = creationTime.getMinutes();
+    //const cronExpression = `0 0 * * *`; 12:00 am everyday 
 
     const cronExpression = `*/1 * * * *`;
 
 
     cron.schedule(cronExpression, async () => {
+
+      //
       const data = await fetch(`https://api.weatherbit.io/v2.0/current?lat=${latitude}&lon=${longitude}&key=${process.env.API_KEY}`);
       const dataJSON = await data.json();
       console.log(dataJSON.data[0].uv, dataJSON.data[0].solar_rad);
@@ -456,6 +453,7 @@ const renderGraphJSON = async (req, res) => {
 const dailyDataReport = async (req, res) => {
   const productId = req.params.id;
   const report = await DailyReport.find({ product: productId })
+  // console.log(report);
   res.json({ data: report[report.length - 1] })
 
 }

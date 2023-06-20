@@ -24,6 +24,20 @@ label {
     margin-top: 1.5rem;
 }
 
+.daily-report>p {
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.daily-report>p>span {
+    font-size: 2rem;
+    font-weight: bolder;
+    color: red;
+    margin: 0.4rem;
+}
+
 .container-update {
     display: flex;
     border-radius: 2rem;

@@ -1,6 +1,7 @@
 
-const xValues = ["2023-06-01", "2023-06-02", "2023-06-03", "2023-06-04", "2023-06-05"];
-const yValues = [];
+var xValues = [];
+var yValues = [];
+
 
 
 let urlSegments = window.location.href;
@@ -12,28 +13,43 @@ const data = fetch(`/products/report/graph/data/${projectId}/${productId}`)
     .then(res => res.json())
     .then(res => {
         res.reports.forEach(report => {
+            console.log(report.date.split('T')[0], report.electricityGenerated);
             xValues.push(report.date.split('T')[0]);
             yValues.push(report.electricityGenerated);
         })
+        new Chart("myChart", {
+            type: "pie",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Electricity generated"
+                }
+            }
+        });
+
     });
 
 
-new Chart("myChart", {
-    type: "line",
-    data: {
-        labels: xValues,
-        datasets: [{
-            fill: false,
-            lineTension: 0,
-            backgroundColor: "rgba(0,0,255,1.0)",
-            borderColor: "rgba(0,0,255,0.1)",
-            data: yValues
-        }]
-    },
-    options: {
-        legend: { display: false },
-        scales: {
-            yAxes: [{ ticks: { min: 6, max: 16 } }],
-        }
-    }
-});
+
+function getRandomColor() {
+    var red = Math.floor(Math.random() * 256);
+    var green = Math.floor(Math.random() * 256);
+    var blue = Math.floor(Math.random() * 256);
+    return "rgb(" + red + ", " + green + ", " + blue + ")";
+}
+//To be safe generating 100 colors 
+var barColors = [];
+
+for (var i = 0; i < 100; i++) {
+    barColors.push(getRandomColor());
+}
+
+
+
