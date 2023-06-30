@@ -10,7 +10,6 @@ require('dotenv').config();
 //Rendring the creating page for product
 const renderCreate = (req, res) => {
   const { id } = req.params;
-  // console.log(id);
   const projectId = id;
   res.render('create-product', { projectId });
 }
@@ -32,7 +31,6 @@ const getLonLat = async (req, res) => {
   try {
     const projectId = req.params.projectId;
     const products = await Product.find({ project: projectId });
-    // Render the view template
     res.status(200).json({ products });
   } catch (error) {
     console.error('Error getting products', error);
@@ -41,7 +39,7 @@ const getLonLat = async (req, res) => {
 }
 
 
-// Get product by ID
+//NOt used
 const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -80,9 +78,16 @@ const createProduct = async (req, res) => {
       project: projectId,
     });
     const savedProduct = await product.save();
-    //const cronExpression = `0 0 * * *`; 12:00 am everyday 
+    /* cronjob set to run 12:00 am everyday
+    First Zero represent the beginning minute of the hour 
+    Second Zero represent the beginning of every day which is 12:00 PM
+    */
+    const cronExpression = `0 12 * * *`;
+    // cron job expression to run every minute to get the data for development and testing
+    //const cronExpression = `*/1 * * * *`;
 
-    const cronExpression = `*/1 * * * *`;
+
+
 
 
     cron.schedule(cronExpression, async () => {
@@ -114,6 +119,7 @@ const createProduct = async (req, res) => {
         await dailyReport.save();
       } catch (error) {
         console.log(error);
+        res.status(500).render('500');
       }
 
     });
@@ -123,7 +129,7 @@ const createProduct = async (req, res) => {
     res.status(200).render('list-of-products', { products, projectId });
   } catch (error) {
     console.error('Error creating product', error);
-    res.status(500).json({ error: 'An error occurred' });
+    res.status(500).render('500');
   }
 
 };
@@ -177,7 +183,6 @@ const getDataLonLat = async (req, res) => {
   try {
     const projectId = req.params.projectId;
     const products = await Product.find({ project: projectId });
-    // Render the view template
     res.status(200).json({ products });
   } catch (error) {
     console.error('Error getting products', error);
@@ -308,10 +313,10 @@ const reportProduct = async (req, res) => {
 
   //Api call to get the weather data within 2 periods 
   const orientationMap = {
-    S: 0.75,  // Example value for south-facing orientation
-    N: 0.25,  // Example value for north-facing orientation
-    W: 0.5,   // Example value for west-facing orientation
-    E: 1.0    // Example value for east-facing orientation
+    S: 0.75,
+    N: 0.25,
+    W: 0.5,
+    E: 1.0
   };
 
   const data = await fetch(`https://api.weatherbit.io/v2.0/history/daily?lat=${latitude}&lon=${longitude}&start_date=${startDate}&end_date=${endDate}&key=${process.env.API_KEY}`);
@@ -354,7 +359,7 @@ const reportProduct = async (req, res) => {
     res.status(200).render('report-product', { id, projectId, product });
   } catch (error) {
     console.error('Error getting products', error);
-    res.status(500).json({ error: 'An error occurred' });
+    res.status(500).render('500');
   }
 
 }
@@ -453,7 +458,7 @@ const renderGraphJSON = async (req, res) => {
 const dailyDataReport = async (req, res) => {
   const productId = req.params.id;
   const report = await DailyReport.find({ product: productId })
-  // console.log(report);
+  
   res.json({ data: report[report.length - 1] })
 
 }

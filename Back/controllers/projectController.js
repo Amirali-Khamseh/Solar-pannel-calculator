@@ -1,4 +1,6 @@
 const Project = require('../models/Project');
+const Product = require('../models/Product');
+const DailyReport = require('../models/DailyReport');
 
 //Rendering the Project's creation from 
 const renderForm = (req, res) => {
@@ -8,7 +10,7 @@ const renderForm = (req, res) => {
 // Create a new project
 const createProject = async (req, res) => {
     const userId = req.session.userId;
-    console.log(req.body.name, req.body.description, userId);
+    //console.log(req.body.name, req.body.description, userId);
     try {
         const { title, description } = req.body;
         const createdBy = userId;
@@ -20,8 +22,6 @@ const createProject = async (req, res) => {
         });
 
         await project.save();
-
-        //res.status(201).json({ message: 'Project created successfully', project });
         res.render('project', { user: userId });
     } catch (error) {
         console.error('Error creating project', error);
@@ -34,11 +34,10 @@ const getAllProjects = async (req, res) => {
     try {
         const userId = req.session.userId;
         const projects = await Project.find({ createdBy: userId }).populate('createdBy', 'name');
-
         res.render('list-of-projects', { projects });
     } catch (error) {
         console.error('Error getting projects', error);
-        res.status(500).json({ error: 'An error occurred' });
+        res.status(500).render('500');
     }
 };
 
@@ -69,7 +68,7 @@ const getProjectById = async (req, res) => {
 const renderUpdate = async (req, res) => {
     const id = req.params.id;
     const project = await Project.findById({ _id: id })
- 
+
     res.render('edit-project', { id, project })
 };
 
@@ -85,12 +84,12 @@ const updateProject = async (req, res) => {
         const project = await Project.findById(id);
 
         if (!project) {
-            return res.status(404).json({ error: 'Project not found' });
+            return res.status(404).render('400');
         }
 
         // Check if the user ID matches the project's creator
         if (project.createdBy.toString() !== userId) {
-            return res.status(401).json({ error: 'Unauthorized' });
+            return res.status(401).render('403');
         }
 
         // Update the project
@@ -101,7 +100,7 @@ const updateProject = async (req, res) => {
         res.status(200).render('project', { user: userId });
     } catch (error) {
         console.error('Error updating project', error);
-        res.status(500).json({ error: 'An error occurred' });
+        res.status(500).render('500');
     }
 };
 
@@ -111,12 +110,12 @@ const renderDelete = async (req, res) => {
         const { id } = req.params;
         const project = await Project.findById(id);
         if (!project) {
-            return res.status(404).json({ error: 'Project not found' });
+            return res.status(404).render('400');
         }
         res.render('delete-project', { project })
     } catch (error) {
         console.error('Error getting project', error);
-        res.status(500).json({ error: 'An error occurred' });
+        res.status(500).render('500');
     }
 
 };
@@ -132,24 +131,50 @@ const deleteProject = async (req, res) => {
         const project = await Project.findById(id);
 
         if (!project) {
-            return res.status(404).json({ error: 'Project not found' });
+            return res.status(404).render('400');
         }
 
         // Check if the user ID matches the project's creator
         if (project.createdBy.toString() !== userId) {
-            return res.status(401).json({ error: 'Unauthorized' });
+            return res.status(401).render('403');
         }
 
         const deletedProject = await Project.findByIdAndDelete(id);
         if (!deletedProject) {
-            return res.status(404).json({ error: 'Project not found' });
+            return res.status(404).render('400');
         }
         res.status(200).render('project', { user: userId });
     } catch (error) {
         console.error('Error deleting project', error);
-        res.status(500).json({ error: 'An error occurred' });
+        res.status(500).render('500');
     }
 };
+//Electricity Generated Summ for all products 
+const projectOutPut = async (req, res) => {
+    try {
+
+        const projectId = req.params.id;
+
+        const products = await Product.find({ project: projectId, status: 'active' });
+
+        if (!products) {
+            return res.status(404).json({ message: 'No products found for the given project ID' });
+        }
+        let electricitySum = 0;
+        for (const product of products) {
+            const dailyReports = await DailyReport.find({ product: product._id });
+
+            for (const dailyReport of dailyReports) {
+                electricitySum += dailyReport.electricityGenerated;
+            }
+        }
+        res.json({ electricitySum });
+
+
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 module.exports = {
     createProject,
@@ -159,5 +184,7 @@ module.exports = {
     deleteProject,
     renderForm,
     renderUpdate,
-    renderDelete
+    renderDelete,
+    projectOutPut,
+
 };

@@ -1,11 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    about goes here
-</body>
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+
+
+
+
+<%- include('./partials/head') %>
+
+    <body>
+        <div class="container mx-auto border border-primary rounded p-4">
+            <div class="row">
+                <%- include('./partials/index-nav') %>
+                    <article class="text-white">
+                        <p>This application is designed to help users manage their solar panels efficiently. It offers
+                            comprehensive monitoring and performance analysis by using various factors such as location,
+                            weather conditions, panel type, size, angle of positioning, and orientation. By providing
+                            real-time calculations tailored to the specific characteristics of each panel, users can
+                            effortlessly calculate the output of all active solar panels within a project or focus on
+                            individual panels for more detailed insights. </p>
+                        <p>The app is also helpful to those who are yet to acquire solar panels. It comes with a
+                            simulation feature that accurately predicts panel performance in any desired location. Users
+                            can input the panel's specifications, including type, inclination, area, and maximum power
+                            output, and the program generates insightful energy generation reports for each day or
+                            desired time period. </p>
+                        <p>The application ensures seamless access to these reports, with convenient options for both
+                            email delivery and in-app availability. Visual representations and intuitive graphs are
+                            integrated within the app, offering users an effortless way to visualize and interpret daily
+                            energy generation patterns for each panel. </p>
+                    </article>
+
+            </div>
+        </div>
+
+
+    </body>
+
+
+
+
 </html>

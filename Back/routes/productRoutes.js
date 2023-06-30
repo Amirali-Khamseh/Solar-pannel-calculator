@@ -30,7 +30,7 @@ router.post('/delete/:projectId/:id', productController.deleteProduct);
 router.get('/delete/:projectId/:id', productController.renderDelete);
 
 
-//NOt used yet 
+//NOt used  
 router.get('/:id', productController.getProductById);
 
 
@@ -41,14 +41,14 @@ router.get('/report/:projectId/:id', productController.renderReport);
 router.post('/report/:projectId/:id', productController.reportProduct);
 
 //Graphical representation of a read only project 
-router.get('/report/graph/:projectId/:id',productController.renderGraph);
+router.get('/report/graph/:projectId/:id', productController.renderGraph);
 
 
 //History Report
-router.get('/report/history/:projectId/:id',productController.historyReport);
+router.get('/report/history/:projectId/:id', productController.historyReport);
 
-router.get('/report/graph/data/:projectId/:id',productController.renderGraphJSON);
-router.get('/report/daily/data/:projectId/:id',productController.dailyDataReport);
+router.get('/report/graph/data/:projectId/:id', productController.renderGraphJSON);
+router.get('/report/daily/data/:projectId/:id', productController.dailyDataReport);
 
 
 

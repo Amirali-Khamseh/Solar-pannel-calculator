@@ -39,10 +39,22 @@
 
                     <a class="btn btn-success" href="/products/all/<%= project._id %>">List of Products 📊</a>
 
+                    <a class="btn btn-light text-dark " id="output-btn">Project's OutPut</a>
+
                 </div>
+                <div class="card d-none">
+                    <div class="card-body">
+                        <h2>
+                        Project <span class="text-primary">
+                            <%= project.title %>
+                        </span> generated So far <span id="output" class="text-danger"></span> KW
+                    </h2>
+                    </div>
+                </div>
+
             </div>
 
-
+            <script src="/JS/projectReport.js"></script>
     </body>
 
 </html>

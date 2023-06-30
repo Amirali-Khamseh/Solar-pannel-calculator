@@ -1,19 +1,19 @@
+//For hashing the password
 const bcrypt = require('bcrypt');
+//User model , to interact with the database
 const User = require('../models/User');
 
 
-
+//Registering user into the system , with applied validation for existing users
 signup = async (req, res) => {
 
     try {
         const { email, password, name } = req.body;
-
         // Check if the user already exists
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
-            return res.status(401).render('400');
+            return res.status(401).render('used-email');
         }
-
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = new User({
@@ -24,18 +24,18 @@ signup = async (req, res) => {
 
         await user.save();
 
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(200).render('signin');
     } catch (error) {
-        console.error('Error signing up', error);
+        //console.error('Error signing up', error);
         res.status(500).render('500');
     }
 };
-
+//Loggin in user based on their password
 signin = async (req, res) => {
 
     try {
         const { email, password } = req.body;
-
+        //Getting the user who has been registered with the email coming from request body
         const user = await User.findOne({ email: email });
         if (!user) {
             return res.status(401).render('400');
@@ -64,7 +64,7 @@ const dashboard = async (req, res) => {
         res.status(200).render('project', { user });
     } catch (error) {
         console.error('Not authorized', error);
-        res.status(400).render('400');
+        res.status(403).render('403');
     }
 }
 
@@ -79,8 +79,8 @@ const updateUserGet = async (req, res) => {
         }
         res.status(200).render('update-user.ejs', { user });
     } catch (error) {
-        console.error('Error updating user', error);
-        res.status(500).json({ error: 'An error occurred' });
+        //console.error('Error updating user', error);
+        res.status(500).render('500');
     }
 };
 
@@ -118,12 +118,12 @@ const deleteUserGet = async (req, res) => {
         const { id } = req.params;
         const user = await User.findById({ _id: id });
         if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.render('500');
         }
         res.status(200).render('user-delete', { user });
     } catch (error) {
         console.error('Error deleting user', error);
-        res.status(500).json({ error: 'An error occurred' });
+        res.status(500).render('500');
     }
 };
 // Delete user by ID
@@ -132,12 +132,14 @@ const deleteUser = async (req, res) => {
         const { id } = req.params;
         const user = await User.findByIdAndDelete(id);
         if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+            res.redirect('/');
+        } else {
+            res.redirect('/');
         }
-        res.status(204).json({ message: 'User deleted successfully' });
+
     } catch (error) {
-        console.error('Error deleting user', error);
-        res.status(500).json({ error: 'An error occurred' });
+        // console.error('Error deleting user', error);
+        res.status(500).render('500');
     }
 };
 

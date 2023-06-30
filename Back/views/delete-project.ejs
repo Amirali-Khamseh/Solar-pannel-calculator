@@ -15,9 +15,9 @@
 
                                 <th scope="col">Project's name</th>
                                 <th scope="col">Project's description</th>
-                                <th scope="col">Project's Owner</th>
-                                <th scope="col">Project's Details</th>
                                 <th scope="col">Edit project</th>
+                                <th scope="col">Project's Details</th>
+
 
                             </tr>
                         </thead>
@@ -30,9 +30,7 @@
                                 <td>
                                     <%= project.description %>
                                 </td>
-                                <td>
-                                    <%= project.createdBy.name %>
-                                </td>
+
                                 <td>
 
                                     <a href="/projects/update/<%= project._id %>">Edit 🔄</a>
@@ -44,7 +42,7 @@
                             <tr>
                                 <td>
                                     <form action="/projects/delete/<%=project._id%>" method="POST">
-                                        <button type="submit" class="btn btn-danger">Yes ✔ </button>
+                                        <button type="submit" class="btn btn-danger">Delete ✔ </button>
                                     </form>
                                 </td>
                                 <td>

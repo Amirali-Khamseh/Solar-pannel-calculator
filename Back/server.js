@@ -30,7 +30,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 //Session Set-up
 app.use(session({
-    secret: 'your-secret-key',
+    secret: 'secret-key',
     resave: false,
     saveUninitialized: false
 }));
@@ -42,6 +42,23 @@ app.use('/', mainRoutes);
 app.use('/auth', authRoutes);
 app.use('/projects', projectRoutes);
 app.use('/products', productRoutes);
+
+app.all('*', (req, res, next) => {
+    //Error object indicating that the route is not found
+    const error = new Error('Route not found');
+    error.status = 404;
+    next(error);
+});
+
+//Middleware for handling unkown routes 
+app.use((err, req, res, next) => {
+    if (err.status === 404) {
+        res.status(404).render('404');
+    } else {
+
+        res.status(500).render('500');
+    }
+});
 
 app.listen(port, () => {
     console.log('Server up and running on port ' + port
