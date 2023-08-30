@@ -3,7 +3,9 @@
 The Solar Panel Management Application is a comprehensive tool designed to assist users in efficiently managing their solar panels. It provides monitoring and performance analysis by considering various factors such as location, weather conditions, panel type, size, angle of positioning, and orientation. The application offers real-time calculations tailored to each panel's specific characteristics, allowing users to calculate the output of individual panels or entire projects.
 
 For users who have not yet acquired solar panels, the application includes a simulation feature. Users can input panel specifications, and the program generates accurate energy generation reports for any desired location. These reports can be accessed conveniently through email or within the application, presenting visual representations and intuitive graphs for easy interpretation of daily energy generation patterns.
-<br>
+<br />
+<br />
+<br />
 ![image](https://github.com/Amirali-Khamseh/Solar-pannel-management-system/assets/72108341/073c19c6-f3b9-429c-a166-29105e8d4f71)
 *Daily report generation page , report calculator generation between two periods of time .*
 ![image](https://github.com/Amirali-Khamseh/Solar-pannel-management-system/assets/72108341/99882ac3-f854-46bc-a4de-72da7730159a)
