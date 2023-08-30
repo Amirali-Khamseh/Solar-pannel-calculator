@@ -30,7 +30,6 @@ To run the program, ensure that your operating system has Node.JS installed. Thi
 Once you have cloned or downloaded the project, follow these steps:
 - Run the following commands for installing the package manager and adding the dependencies:
 ```
-npm init -y
 npm install
 ```
 - Create a new file in the project directory called .env (if it doesn't already exist).
