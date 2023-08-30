@@ -4,8 +4,11 @@ The Solar Panel Management Application is a comprehensive tool designed to assis
 
 For users who have not yet acquired solar panels, the application includes a simulation feature. Users can input panel specifications, and the program generates accurate energy generation reports for any desired location. These reports can be accessed conveniently through email or within the application, presenting visual representations and intuitive graphs for easy interpretation of daily energy generation patterns.
 ![image](https://github.com/Amirali-Khamseh/Solar-pannel-management-system/assets/72108341/073c19c6-f3b9-429c-a166-29105e8d4f71)
+*Daily report generation page , report calculator generation between two periods of time . *
 ![image](https://github.com/Amirali-Khamseh/Solar-pannel-management-system/assets/72108341/99882ac3-f854-46bc-a4de-72da7730159a)
+*List of products inside a project . *
 ![image](https://github.com/Amirali-Khamseh/Solar-pannel-management-system/assets/72108341/04499788-25b2-4706-8ed2-e00e642401d7)
+*Landing page. *
 
 
 ## Architecture
@@ -33,14 +36,14 @@ Controllers handle the application's logic and are invoked based on the specific
 ## Implementation 
 To run the program, ensure that your operating system has Node.JS installed. This application was developed using version 18.15.0. If you encounter issues starting the application, try changing the version to the one it was tested on and confirm that you have node package manager (npm) available.
 Once you have cloned or downloaded the project, follow these steps:
-- Run the following commands for installing the package manager and adding the dependencies:
+- Run the following commands for installing the package manager and adding the dependencies (first make sure your current directory is 'Back'):
 ```
 npm install
 ```
-- Create a new file in the project directory called .env (if it doesn't already exist).
+- Create a new file in the project directory called .env in the root directory of the project.
 - Create the same type of collections as available in folder 'models' in MongoDB database.
 
-- Open the .env file and add the your connection string as an environment variable.
+- Open the .env file and add the your connection string as an environment variable , if you change the variable names of the .env , make sure you change it in the database confiuration file and places the API is getting called as well as the app key for the gmail account you are planning to use .
 
 - Get your own API key  from 'https://www.weatherbit.io/' and replace it into .env file.
 - Place your application key obtained from google in the .env as an application key .
