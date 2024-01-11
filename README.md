@@ -17,7 +17,7 @@ For users who have not yet acquired solar panels, the application includes a sim
 ## Architecture
 The Solar Panel Management Application follows the Model-View-Controller (MVC) design pattern using Express.js as the web application framework. The MVC pattern ensures a clear separation of responsibilities, leading to modular and organized code structure. The Model handles data and business logic, the View manages the presentation layer, and the Controller acts as an intermediary, managing data flow and user interactions.
 
-The use of the MVC pattern in this large-scale application allows for code maintainability, scalability, and reusability. Each part of the application has its own separated code, making debugging easier and enabling isolation of specific functionalities for troubleshooting.
+The use of the MVC pattern in this application allows for code maintainability, scalability, and reusability. Each part of the application has its own separated code, making debugging easier and enabling isolation of specific functionalities for troubleshooting.
 
 ## Front-end Technologies
 
